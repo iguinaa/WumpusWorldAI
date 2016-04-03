@@ -51,8 +51,36 @@ public class Map {
             x = (int)(Math.random() * width);
             y = (int)(Math.random() * height);
 
+            //Assign breeze first so it doesn't write over pit
+            //TODO still writing over it, need to handle this in a separate loop, maybe in a method in the Square class to set its char appropriately once all stats are assigned
+            if(x != width - 1) {
+                wumpusMap[x + 1][y].hasBreeze = true;
+                wumpusMap[x + 1][y].mapChar = 'B';
+
+            }
+
+            if(x != 0) {
+                wumpusMap[x - 1][y].hasBreeze = true;
+                wumpusMap[x - 1][y].mapChar = 'B';
+
+            }
+
+            if(y != height - 1) {
+                wumpusMap[x][y + 1].hasBreeze = true;
+                wumpusMap[x][y + 1].mapChar = 'B';
+
+            }
+
+            if(y != 0) {
+                wumpusMap[x][y - 1].hasBreeze = true;
+                wumpusMap[x][y - 1].mapChar = 'B';
+
+            }
+
+            //Assign pit
             wumpusMap[x][y].hasPit = true;
-            wumpusMap[x][y].mapChar = 'P';  //TODO remove after testing
+            wumpusMap[x][y].mapChar = 'P';
+
         }
 
     }
