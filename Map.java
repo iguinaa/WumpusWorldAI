@@ -1,14 +1,20 @@
+package sample;
+
+import javafx.scene.layout.GridPane;
+
 /**
  * Created by awills on 4/2/16.
  */
 
 //Generate map to play wumpusworld game on
-public class Map {
+public class Map extends GridPane
+{
 
     private int width;
     private int height;
 
     Square[][] wumpusMap;
+
 
     //Constructor
     Map(){
@@ -40,7 +46,8 @@ public class Map {
 
             for (int j = 0; j < width; j++) {
 
-                wumpusMap[j][i] = new Square();
+                wumpusMap[i][j] = new Square();
+                this.add(wumpusMap[i][j], i, j);
 
             }
         }
@@ -48,6 +55,7 @@ public class Map {
         //Assign pits
         for(int i = 0; i < pitCount; i++)   {
 
+            // TODO(Andrew): exclude protagonist starting point
             x = (int)(Math.random() * width);
             y = (int)(Math.random() * height);
 
@@ -55,31 +63,31 @@ public class Map {
             //TODO still writing over it, need to handle this in a separate loop, maybe in a method in the Square class to set its char appropriately once all stats are assigned
             if(x != width - 1) {
                 wumpusMap[x + 1][y].hasBreeze = true;
-                wumpusMap[x + 1][y].mapChar = 'B';
+                wumpusMap[x + 1][y].setMapChar('B');
 
             }
 
             if(x != 0) {
                 wumpusMap[x - 1][y].hasBreeze = true;
-                wumpusMap[x - 1][y].mapChar = 'B';
+                wumpusMap[x - 1][y].setMapChar('B');
 
             }
 
             if(y != height - 1) {
                 wumpusMap[x][y + 1].hasBreeze = true;
-                wumpusMap[x][y + 1].mapChar = 'B';
+                wumpusMap[x][y + 1].setMapChar('B');
 
             }
 
             if(y != 0) {
                 wumpusMap[x][y - 1].hasBreeze = true;
-                wumpusMap[x][y - 1].mapChar = 'B';
+                wumpusMap[x][y - 1].setMapChar('B');
 
             }
 
             //Assign pit
             wumpusMap[x][y].hasPit = true;
-            wumpusMap[x][y].mapChar = 'P';
+            wumpusMap[x][y].setMapChar('P');
 
         }
 
@@ -101,16 +109,7 @@ public class Map {
 
     }
 
-    private class Square {
 
-        boolean hasWumpus = false;
-        boolean hasGold = false;
-        boolean hasStench = false;
-        boolean hasBreeze = false;
-        boolean hasPit = false;
-
-        char mapChar = 'X';
-    }
 
 
 }
