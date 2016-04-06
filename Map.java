@@ -44,11 +44,15 @@ public class Map {
             }
         }
 
+        //Set starting point (this is location 1, 1 on the map)
+        wumpusMap[0][0].isStart = true;
+
         //Assign pits
         for (int i = 0; i < pitCount; i++) {
 
-            x = (int) (Math.random() * width);
-            y = (int) (Math.random() * height);
+            //Prevent pit from generating in starting location
+            x = (int) (Math.random() * (width - 1) + 1);
+            y = (int) (Math.random() * (height - 1) + 1);
 
             //Assign breeze first so it doesn't write over pit
             //TODO still writing over it, need to handle this in a separate loop, maybe in a method in the Square class to set its char appropriately once all stats are assigned
