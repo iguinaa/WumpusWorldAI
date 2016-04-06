@@ -107,6 +107,7 @@ public class Map {
         boolean hasStench = false;
         boolean hasBreeze = false;
         boolean hasPit = false;
+        boolean isStart = false;
 
         char mapChar = 'X';
     }
