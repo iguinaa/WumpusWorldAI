@@ -55,7 +55,7 @@ public class Map {
             y = (int) (Math.random() * (height - 1) + 1);
 
             //Assign breeze first so it doesn't write over pit
-            //TODO still writing over it, need to handle this in a separate loop, maybe in a method in the Square class to set its char appropriately once all stats are assigned
+            //TODO remove once GUI is working
             if (x != width - 1) {
                 wumpusMap[x + 1][y].hasBreeze = true;
                 wumpusMap[x + 1][y].mapChar = 'B';
@@ -85,6 +85,12 @@ public class Map {
             wumpusMap[x][y].mapChar = 'P';
 
         }
+
+        //Assign wumpus location
+        x = (int) (Math.random() * (width - 1) + 1);
+        y = (int) (Math.random() * (height - 1) + 1);
+
+        wumpusMap[x][y].hasWumpus = true;
 
     }
 
