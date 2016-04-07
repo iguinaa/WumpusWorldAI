@@ -1,39 +1,19 @@
-//package sample;
+public class Main {
 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
-import javafx.scene.layout.Pane;
+    public static void main(String[] args) {
 
-public class Main extends Application {
+        Map wumpusMap;
 
-    @Override
-    public void start(Stage primaryStage)
-    {
-        primaryStage.setTitle("Wumpus World");
+        if (args.length == 2) {
 
-        /* test code */
-//        Pane root = new BorderPane();
-//        primaryStage.setScene(new Scene(root, 300, 275));
-//        primaryStage.show();
-        /* end test */
+            wumpusMap = new Map(Integer.valueOf(args[0]), Integer.valueOf(args[1]));
 
-        Map wumpusMap = new Map();
+        } else {
+
+            wumpusMap = new Map();
+        }
+
         wumpusMap.printMap();
 
-
-
-
-        Game wumpus = new Game(primaryStage);
-        wumpus.run();
-
-
-    }
-
-
-    public static void main(String[] args)
-    {
-        launch(args);
     }
 }
