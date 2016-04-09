@@ -10,7 +10,7 @@ import javafx.scene.layout.Pane;
 public class WumpusWorldPane extends GamePane
 {
     Pane bottom; // should include log
-    Map mainPain;
+    Map mainPane;
     public WumpusWorldPane()
     {
         super();
