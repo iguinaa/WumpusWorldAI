@@ -2,8 +2,10 @@
  * Created by Alexander Wills on 4/2/16.
  */
 
+import javafx.scene.layout.GridPane;
+
 //Generate map to play wumpusworld game on
-public class Map {
+public class Map extends GridPane{
 
     Square[][] wumpusMap;
     private int width;
