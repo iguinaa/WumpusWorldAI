@@ -1,3 +1,4 @@
+//package sample;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -18,8 +19,8 @@ public class Main extends Application {
 //        primaryStage.show();
         /* end test */
 
-        Map wumpusMap = new Map();
-        wumpusMap.printMap();
+//        Map wumpusMap = new Map();
+//        wumpusMap.printMap();
 
 
 
