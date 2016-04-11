@@ -9,7 +9,9 @@ public class Player {
     int currentY = 0;
     Map gameMap;
 
-    public Player() {
+    public Player(Map currentMap) {
+
+        gameMap = currentMap;
 
     }
 
