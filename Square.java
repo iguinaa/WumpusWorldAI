@@ -18,6 +18,7 @@ public class Square extends HBox
     boolean hasStench = false;
     boolean hasBreeze = false;
     boolean hasPit = false;
+    boolean isStart = false;
 
     Image testBG;
     ImageView testBGView;

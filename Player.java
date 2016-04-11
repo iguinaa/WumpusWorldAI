@@ -17,14 +17,19 @@ public class Player {
 
     private void checkSquare() {
 
-        //TODO end game if player landed on wumpus
         if (gameMap.wumpusMap[currentX][currentY].hasWumpus) {
 
+            //TODO print to GUI
+            System.out.println("Wumpus got you!");
+            System.exit(0);
 
         }
 
-        //TODO end game if player is in pit
         if (gameMap.wumpusMap[currentX][currentY].hasPit) {
+
+            //TODO print to GUI
+            System.out.println("You fell in a pit!");
+            System.exit(0);
 
         }
 

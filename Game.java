@@ -22,7 +22,7 @@ public class Game implements Runnable, Updateable
     public final int TOTAL_CELLS = NUM_ROWS * NUM_COLS;
 
     Stage primaryStage; // Window handle
-    GamePane gamePane;    // root pane == container for a scene
+    WumpusWorldPane gamePane;    // root pane == container for a scene
     Scene scene;// This scene/canvas handle
 
     public Game(Stage primaryStage)

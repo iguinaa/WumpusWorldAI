@@ -14,8 +14,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Wumpus World");
 
-        Map wumpusMap = new Map();
-        wumpusMap.printMap();
+    //    Map wumpusMap = new Map();
+    //    wumpusMap.printMap();
 
 
         Game wumpus = new Game(primaryStage);

@@ -61,31 +61,31 @@ public class Map extends GridPane{
             if (x != width - 1) {
                 wumpusMap[x + 1][y].hasBreeze = true;
                 wumpusMap[x + 1][y].mapChar = 'B';
-
+                wumpusMap[x][y].setMapChar('G');
             }
 
             if (x != 0) {
                 wumpusMap[x - 1][y].hasBreeze = true;
                 wumpusMap[x - 1][y].mapChar = 'B';
-
+                wumpusMap[x][y].setMapChar('G');
             }
 
             if (y != height - 1) {
                 wumpusMap[x][y + 1].hasBreeze = true;
                 wumpusMap[x][y + 1].mapChar = 'B';
-
+                wumpusMap[x][y].setMapChar('G');
             }
 
             if (y != 0) {
                 wumpusMap[x][y - 1].hasBreeze = true;
                 wumpusMap[x][y - 1].mapChar = 'B';
-
+                wumpusMap[x][y].setMapChar('G');
             }
 
             //Assign pit
             wumpusMap[x][y].hasPit = true;
             wumpusMap[x][y].mapChar = 'P';
-
+            wumpusMap[x][y].setMapChar('G');
         }
 
         //Assign wumpus location
@@ -93,30 +93,30 @@ public class Map extends GridPane{
         y = (int) (Math.random() * (height - 1) + 1);
         wumpusMap[x][y].hasWumpus = true;
         wumpusMap[x][y].mapChar = 'W';
-
+        wumpusMap[x][y].setMapChar('G');
         //assign stench
         if (x != width - 1) {
             wumpusMap[x + 1][y].hasStench = true;
             wumpusMap[x + 1][y].mapChar = 'S';
-
+            wumpusMap[x][y].setMapChar('G');
         }
 
         if (x != 0) {
             wumpusMap[x - 1][y].hasStench = true;
             wumpusMap[x - 1][y].mapChar = 'S';
-
+            wumpusMap[x][y].setMapChar('G');
         }
 
         if (y != height - 1) {
             wumpusMap[x][y + 1].hasStench = true;
             wumpusMap[x][y + 1].mapChar = 'S';
-
+            wumpusMap[x][y].setMapChar('G');
         }
 
         if (y != 0) {
             wumpusMap[x][y - 1].hasStench = true;
             wumpusMap[x][y - 1].mapChar = 'S';
-
+            wumpusMap[x][y].setMapChar('G');
         }
 
         //assign gold
@@ -124,6 +124,7 @@ public class Map extends GridPane{
         y = (int) (Math.random() * (height - 1) + 1);
         wumpusMap[x][y].hasGold = true;
         wumpusMap[x][y].mapChar = 'G';
+        wumpusMap[x][y].setMapChar('G');
 
     }
 
@@ -142,18 +143,5 @@ public class Map extends GridPane{
         }
 
     }
-
-    public class Square {
-
-        boolean hasWumpus = false;
-        boolean hasGold = false;
-        boolean hasStench = false;
-        boolean hasBreeze = false;
-        boolean hasPit = false;
-        boolean isStart = false;
-
-        char mapChar = 'X';
-    }
-
 
 }
