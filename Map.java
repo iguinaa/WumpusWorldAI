@@ -7,7 +7,7 @@ import javafx.scene.layout.GridPane;
 //Generate map to play wumpusworld game on
 public class Map extends GridPane{
 
-    Square[][] wumpusMap;
+    public Square[][] wumpusMap;
     private int width;
     private int height;
 
@@ -143,7 +143,7 @@ public class Map extends GridPane{
 
     }
 
-    private class Square {
+    public class Square {
 
         boolean hasWumpus = false;
         boolean hasGold = false;
