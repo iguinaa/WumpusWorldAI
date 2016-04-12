@@ -22,7 +22,7 @@ public class Game implements Runnable, Updateable
     public final int TOTAL_CELLS = NUM_ROWS * NUM_COLS;
 
     Stage primaryStage; // Window handle
-    WumpusWorldPane gamePane;    // root pane == container for a scene
+    GamePane gamePane;    // root pane == container for a scene
     Scene scene;// This scene/canvas handle
 
     public Game(Stage primaryStage)
@@ -68,7 +68,7 @@ public class Game implements Runnable, Updateable
     {
         gamePane.setPrefSize(1200, 1000);
         gamePane.setMinSize(500,500);
-        gamePane.setAlignment(gamePane.mainPane, Pos.CENTER);
+        gamePane.setAlignment(gamePane.getMainPane(), Pos.CENTER);
         gamePane.setOnMouseClicked(new EventHandler<MouseEvent>()
         {
             @Override

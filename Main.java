@@ -1,3 +1,4 @@
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -11,16 +12,31 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage)
+    {
         primaryStage.setTitle("Wumpus World");
 
-    //    Map wumpusMap = new Map();
-    //    wumpusMap.printMap();
+        /* test code */
+//        Pane root = new BorderPane();
+//        primaryStage.setScene(new Scene(root, 300, 275));
+//        primaryStage.show();
+        /* end test */
+
+//        Map wumpusMap = new Map();
+//        wumpusMap.printMap();
+
+
 
 
         Game wumpus = new Game(primaryStage);
         wumpus.run();
 
 
+    }
+
+
+    public static void main(String[] args)
+    {
+        launch(args);
     }
 }

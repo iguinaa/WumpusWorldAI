@@ -1,3 +1,5 @@
+
+
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -8,11 +10,11 @@ import javafx.scene.layout.Pane;
 public class WumpusWorldPane extends GamePane
 {
     Pane bottom; // should include log
-    Map mainPane;
+
     public WumpusWorldPane()
     {
         super();
-        this.mainPane = new Map();
+        this.setMainPane(new Map());
         mainPane.autosize();
 
         ((GridPane)mainPane).setGridLinesVisible(true);

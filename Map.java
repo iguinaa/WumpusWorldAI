@@ -1,3 +1,7 @@
+
+
+import javafx.scene.layout.GridPane;
+
 /**
  * Created by Alexander Wills on 4/2/16.
  */
@@ -5,11 +9,15 @@
 import javafx.scene.layout.GridPane;
 
 //Generate map to play wumpusworld game on
-public class Map extends GridPane{
+public class Map extends GridPane
+{
 
     public Square[][] wumpusMap;
     private int width;
     private int height;
+
+    Square[][] wumpusMap;
+
 
     //Constructor
     Map() {
@@ -32,17 +40,18 @@ public class Map extends GridPane{
         seedMap();
     }
 
-    private void seedMap() {
+    private void seedMap(){
 
-        int pitCount = (width * height) / 5; //Determine a number of pits to put into the game, trying /5 based on book map
+        int pitCount = (width * height)/5; //Determine a number of pits to put into the game, trying /5 based on book map
         int x, y;
 
         //Fill the array with Square objects
-        for (int i = 0; i < height; i++) {
+        for(int i = 0; i < height; i++) {
 
             for (int j = 0; j < width; j++) {
 
-                wumpusMap[j][i] = new Square();
+                wumpusMap[i][j] = new Square();
+                this.add(wumpusMap[i][j], i, j);
 
             }
         }
@@ -51,40 +60,41 @@ public class Map extends GridPane{
         wumpusMap[0][0].isStart = true;
 
         //Assign pits
-        for (int i = 0; i < pitCount; i++) {
+        for(int i = 0; i < pitCount; i++)   {
 
-            //Prevent pit from generating in starting location
-            x = (int) (Math.random() * (width - 1) + 1);
-            y = (int) (Math.random() * (height - 1) + 1);
+            // TODO(Andrew): exclude protagonist starting point
+            x = (int)(Math.random() * width);
+            y = (int)(Math.random() * height);
 
             //Assign breeze first so it doesn't write over pit
-            if (x != width - 1) {
+            //TODO still writing over it, need to handle this in a separate loop, maybe in a method in the Square class to set its char appropriately once all stats are assigned
+            if(x != width - 1) {
                 wumpusMap[x + 1][y].hasBreeze = true;
-                wumpusMap[x + 1][y].mapChar = 'B';
-                wumpusMap[x][y].setMapChar('G');
+                wumpusMap[x + 1][y].setMapChar('B');
+
             }
 
-            if (x != 0) {
+            if(x != 0) {
                 wumpusMap[x - 1][y].hasBreeze = true;
-                wumpusMap[x - 1][y].mapChar = 'B';
-                wumpusMap[x][y].setMapChar('G');
+                wumpusMap[x - 1][y].setMapChar('B');
+
             }
 
-            if (y != height - 1) {
+            if(y != height - 1) {
                 wumpusMap[x][y + 1].hasBreeze = true;
-                wumpusMap[x][y + 1].mapChar = 'B';
-                wumpusMap[x][y].setMapChar('G');
+                wumpusMap[x][y + 1].setMapChar('B');
+
             }
 
-            if (y != 0) {
+            if(y != 0) {
                 wumpusMap[x][y - 1].hasBreeze = true;
-                wumpusMap[x][y - 1].mapChar = 'B';
-                wumpusMap[x][y].setMapChar('G');
+                wumpusMap[x][y - 1].setMapChar('B');
+
             }
 
             //Assign pit
             wumpusMap[x][y].hasPit = true;
-            wumpusMap[x][y].mapChar = 'P';
+            wumpusMap[x][y].setMapChar('P');
             wumpusMap[x][y].setMapChar('G');
         }
 
