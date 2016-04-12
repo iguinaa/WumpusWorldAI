@@ -16,7 +16,7 @@ public class Map extends GridPane
     private int width;
     private int height;
 
-    Square[][] wumpusMap;
+    //Square[][] wumpusMap;
 
 
     //Constructor
