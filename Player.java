@@ -12,17 +12,29 @@ public class Player {
     Map gameMap;
     Random random = new Random();
 
+    /*Scoring:
+    * +1000 points for climbing out of the cave with the gold
+    * -1000 for falling into a pit or being eaten by the wumpus
+    * -1 for each action taken
+    * -10 for using up the arrow
+    */
+    int score = 0;
+
 
     public Player(/*Map currentMap*/) {
 
         //gameMap = currentMap;
 
         //Flip a coin to determine starting direction
+        //This is necessary since the player currently has no information about the world to go on
         int coinFlip = random.nextInt(2);
 
         if(coinFlip == 1)
             move('r');
+        else
+            move('u');
 
+        //TODO hand off to analyze
     }
 
     private void checkSquare() {
@@ -75,6 +87,9 @@ public class Player {
                         break;
             default:    break;
         }
+
+        //Subtract from score for movement
+        score--;
 
     }
 
