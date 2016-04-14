@@ -6,7 +6,7 @@ import javafx.scene.layout.GridPane;
  * Created by Alexander Wills on 4/2/16.
  */
 
-import javafx.scene.layout.GridPane;
+import java.util.Random;
 
 //Generate map to play wumpusworld game on
 public class Map extends GridPane
@@ -15,6 +15,7 @@ public class Map extends GridPane
     public Square[][] wumpusMap;
     private int width;
     private int height;
+    Random random = new Random();
 
     //Square[][] wumpusMap;
 
@@ -63,8 +64,9 @@ public class Map extends GridPane
         for(int i = 0; i < pitCount; i++)   {
 
             // TODO(Andrew): exclude protagonist starting point
-            x = (int)(Math.random() * width);
-            y = (int)(Math.random() * height);
+            x = random.nextInt(width);
+            y = random.nextInt(height);
+            System.out.println("x " + x + " y " + y);
 
             //Assign breeze first so it doesn't write over pit
             //TODO still writing over it, need to handle this in a separate loop, maybe in a method in the Square class to set its char appropriately once all stats are assigned
@@ -99,8 +101,8 @@ public class Map extends GridPane
         }
 
         //Assign wumpus location
-        x = (int) (Math.random() * (width - 1) + 1);
-        y = (int) (Math.random() * (height - 1) + 1);
+        x = random.nextInt(width);
+        y = random.nextInt(height);
         wumpusMap[x][y].hasWumpus = true;
         wumpusMap[x][y].mapChar = 'W';
         wumpusMap[x][y].setMapChar('G');
@@ -130,8 +132,8 @@ public class Map extends GridPane
         }
 
         //assign gold
-        x = (int) (Math.random() * (width - 1) + 1);
-        y = (int) (Math.random() * (height - 1) + 1);
+        x = random.nextInt(width);
+        y = random.nextInt(height);
         wumpusMap[x][y].hasGold = true;
         wumpusMap[x][y].mapChar = 'G';
         wumpusMap[x][y].setMapChar('G');

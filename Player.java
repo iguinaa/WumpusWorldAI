@@ -10,13 +10,15 @@ public class Player {
     int currentX = 0;
     int currentY = 0;
     Map gameMap;
+    Random random = new Random();
+
 
     public Player(/*Map currentMap*/) {
 
         //gameMap = currentMap;
 
         //Flip a coin to determine starting direction
-        int coinFlip = (int)(Math.random() * 2 + 1);
+        int coinFlip = random.nextInt(2);
 
         if(coinFlip == 1)
             move('r');
