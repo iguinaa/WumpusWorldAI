@@ -29,6 +29,7 @@ public class Main extends Application {
 
 
         Game wumpus = new Game(primaryStage);
+        Player player = new Player();
         wumpus.run();
 
 

@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * Created by awills on 4/10/16.
  */
@@ -9,9 +11,15 @@ public class Player {
     int currentY = 0;
     Map gameMap;
 
-    public Player(Map currentMap) {
+    public Player(/*Map currentMap*/) {
 
-        gameMap = currentMap;
+        //gameMap = currentMap;
+
+        //Flip a coin to determine starting direction
+        int coinFlip = (int)(Math.random() * 2 + 1);
+
+        if(coinFlip == 1)
+            move('r');
 
     }
 
@@ -49,6 +57,23 @@ public class Player {
             hasGold = true;
 
         }
+    }
+
+    private void move(char direction)   {
+
+        switch (direction)  {
+
+            case 'r':   currentX++;
+                        break;
+            case 'l':   currentX--;
+                        break;
+            case 'u':   currentY++;
+                        break;
+            case 'd':   currentY--;
+                        break;
+            default:    break;
+        }
+
     }
 
     //TODO shoot wumpus
