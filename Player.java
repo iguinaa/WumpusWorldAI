@@ -1,7 +1,8 @@
 /**
  * Created by awills on 4/10/16.
  */
-public class Player {
+public class Player implements Updateable
+{
 
     boolean hasArrow = true;
     boolean hasGold = false;
@@ -13,6 +14,18 @@ public class Player {
 
         gameMap = currentMap;
 
+    }
+
+    @Override
+    public void update()
+    {
+        //TODO(Andrew): Get current square
+        //TODO(Andrew):
+        //TODO(Andrew): Check Square
+        //TODO(Andrew): Check Square
+        //TODO(Andrew): Check Square
+        //TODO(Andrew): Check Square
+        //TODO(Andrew): Check Square
     }
 
     private void checkSquare() {
@@ -61,5 +74,6 @@ public class Player {
     private void escape() {
 
     }
+
 
 }

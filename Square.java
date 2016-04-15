@@ -7,9 +7,15 @@ import javafx.scene.layout.HBox;
 /**
  * Created by Andrew on 4/3/2016.
  */
-public class Square extends HBox
+public class Square extends HBox implements Updateable
 {
     public static final int DEFAULT_SIDE = 100; // Default side length
+
+
+    public int prefSide;
+
+    //player knowledge
+    boolean wasVisited; // NOTE: should these be stored here? could store in player, but then couldnt update images easily
 
     // TODO(andrew): edit these if time allows
     // some of these can stack and some cant. ex: wumpus && pit == FALSE
@@ -35,7 +41,13 @@ public class Square extends HBox
         testBGView.setFitWidth(Square.DEFAULT_SIDE);
         testBGView.setPreserveRatio(true);
         this.getChildren().add(testBGView);
+        setLayout();
+    }
 
+
+    public void setLayout()
+    {
+        // TODO: Stub
 
     }
 
@@ -67,6 +79,20 @@ public class Square extends HBox
         testBGView.setPreserveRatio(true);
     }
 
+    public void setPrefSide(int prefSide)
+    {
+        this.prefSide = prefSide;
+        this.setPrefWidth((double)prefSide);
+        this.setPrefHeight((double)prefSide);
+        this.testBGView.setFitWidth(prefSide);
+    }
 
 
+    @Override
+    public void update()
+    {
+        //TODO(Andrew): Update images based on 'knowledge' not fact
+
+
+    }
 }
