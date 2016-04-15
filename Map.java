@@ -27,7 +27,8 @@ public class Map extends GridPane
         width = 4;
         height = 4;
 
-        seedMap();
+        //Need to seed later so player can create a blank map
+        //seedMap();
 
     }
 
