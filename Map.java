@@ -10,6 +10,7 @@ public class Map extends GridPane{
     Square[][] wumpusMap;
     private int width;
     private int height;
+    private int def;	//set to 0 for a default map, 1 for random
 
     //Constructor
     Map() {
@@ -24,12 +25,22 @@ public class Map extends GridPane{
 
     //Construct map with specific dimensions
     Map(int width, int height) {
-
-        wumpusMap = new Square[width][height];
+    	wumpusMap = new Square[width][height];
         this.width = width;
         this.height = height;
 
         seedMap();
+    }
+
+    //Construct map for a default map
+    Map(int def) {
+    	wumpusMap = new Square[4][4];
+        width = 4;
+        height = 4;
+    	if (def == 1)
+			seedMap();
+    	else
+    		defaultMap();
     }
 
     private void seedMap() {
@@ -127,6 +138,59 @@ public class Map extends GridPane{
 
     }
 
+    private void defaultMap() {
+
+        //Fill the array with Square objects
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                wumpusMap[j][i] = new Square();
+            }
+        }
+
+        //Set starting point (this is location 1, 1 on the map)
+        wumpusMap[0][0].isStart = true;
+
+        //Assign breeze first, to (1,0) (3,0) (2,1) (1,2) (3,2) (2,3)
+        wumpusMap[1][0].hasBreeze = true;
+        wumpusMap[1][0].mapChar = 'B';
+        wumpusMap[3][0].hasBreeze = true;
+        wumpusMap[3][0].mapChar = 'B';
+        wumpusMap[2][1].hasBreeze = true;
+        wumpusMap[2][1].mapChar = 'B';
+        wumpusMap[1][2].hasBreeze = true;
+        wumpusMap[1][2].mapChar = 'B';
+        wumpusMap[3][2].hasBreeze = true;
+        wumpusMap[3][2].mapChar = 'B';
+        wumpusMap[2][3].hasBreeze = true;
+        wumpusMap[2][3].mapChar = 'B';
+
+        //Assign pits to (2,0) (2,2) (3,3)
+        wumpusMap[2][0].hasPit = true;
+        wumpusMap[2][0].mapChar = 'P';
+        wumpusMap[2][2].hasPit = true;
+        wumpusMap[2][2].mapChar = 'P';
+        wumpusMap[3][3].hasPit = true;
+        wumpusMap[3][3].mapChar = 'P';
+
+        //Assign wumpus location to (0,2)
+        wumpusMap[0][2].hasWumpus = true;
+        wumpusMap[0][2].mapChar = 'W';
+
+        //assign stench to (0,3) (0,1) (1,2)
+        wumpusMap[0][3].hasStench = true;
+        wumpusMap[0][3].mapChar = 'S';
+        wumpusMap[0][1].hasStench = true;
+        wumpusMap[0][1].mapChar = 'S';
+        wumpusMap[1][2].hasStench = true;
+        wumpusMap[1][2].mapChar = 'S';
+
+        //assign gold to (1,2)
+        wumpusMap[1][2].hasGold = true;
+        wumpusMap[1][2].mapChar = 'G';
+    }
+
+
+
     public void printMap() {
 
         for (int i = 0; i < height; i++) {
@@ -156,4 +220,4 @@ public class Map extends GridPane{
     }
 
 
-}
+}}

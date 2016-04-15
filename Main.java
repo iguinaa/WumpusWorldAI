@@ -14,7 +14,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Wumpus World");
 
-        Map wumpusMap = new Map();
+        Map wumpusMap = new Map(0);	//send 0 for a default map, 1 for random
         wumpusMap.printMap();
 
 
