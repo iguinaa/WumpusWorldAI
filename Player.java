@@ -23,7 +23,7 @@ public class Player {
 
     public Player(/*Map currentMap*/) {
 
-        //gameMap = currentMap;
+        gameMap = new Map(false);
 
         //Flip a coin to determine starting direction
         //This is necessary since the player currently has no information about the world to go on

@@ -21,14 +21,15 @@ public class Map extends GridPane
 
 
     //Constructor
-    Map() {
+    Map(boolean blankMap) { //boolean tells us to seed the map or not
 
         wumpusMap = new Square[4][4];
         width = 4;
         height = 4;
 
-        //Need to seed later so player can create a blank map
-        //seedMap();
+        if (blankMap) {
+            seedMap();
+        }
 
     }
 
@@ -64,9 +65,12 @@ public class Map extends GridPane
         //Assign pits
         for(int i = 0; i < pitCount; i++)   {
 
-            // TODO(Andrew): exclude protagonist starting point
-            x = random.nextInt(width);
-            y = random.nextInt(height);
+            //exclude protagonist starting point
+            do {
+                x = random.nextInt(width);
+                y = random.nextInt(height);
+            } while (x == 0 && y == 0);
+
             System.out.println("x " + x + " y " + y);
 
             //Assign breeze first so it doesn't write over pit

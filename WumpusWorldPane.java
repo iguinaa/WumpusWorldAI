@@ -14,7 +14,7 @@ public class WumpusWorldPane extends GamePane
     public WumpusWorldPane()
     {
         super();
-        this.setMainPane(new Map());
+        this.setMainPane(new Map(true));
         mainPane.autosize();
 
         ((GridPane)mainPane).setGridLinesVisible(true);
