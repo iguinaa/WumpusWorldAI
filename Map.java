@@ -9,7 +9,7 @@ import javafx.scene.layout.GridPane;
 import java.util.Random;
 
 //Generate map to play wumpusworld game on
-public class Map extends GridPane
+public class Map extends GridPane implements Updateable
 {
 
     public Square[][] wumpusMap;
@@ -30,11 +30,23 @@ public class Map extends GridPane
         if (blankMap) {
             seedMap();
         }
+        else{
+            for(int i = 0; i < height; i++) {
+
+                for (int j = 0; j < width; j++) {
+
+                    wumpusMap[i][j] = new Square();
+                    this.add(wumpusMap[i][j], i, j);
+
+                }
+            }
+        }
 
     }
 
+    //TODO add boolean here also
     //Construct map with specific dimensions
-    Map(int width, int height) {
+    public Map(int width, int height) {
 
         wumpusMap = new Square[width][height];
         this.width = width;
@@ -42,6 +54,12 @@ public class Map extends GridPane
 
         seedMap();
     }
+
+    public Map(Map world)
+    {
+        // TODO(Andrew): make map duplication constructor. Need deep copy. Will probably suck cuz references.
+    }
+
 
     private void seedMap(){
 
@@ -74,7 +92,8 @@ public class Map extends GridPane
             System.out.println("x " + x + " y " + y);
 
             //Assign breeze first so it doesn't write over pit
-            //TODO still writing over it, need to handle this in a separate loop, maybe in a method in the Square class to set its char appropriately once all stats are assigned
+            //TODO still writing over it, need to handle this in a separate loop, maybe in a method
+            // in the Square class to set its char appropriately once all stats are assigned
             if(x != width - 1) {
                 wumpusMap[x + 1][y].hasBreeze = true;
                 wumpusMap[x + 1][y].setMapChar('B');
@@ -102,7 +121,6 @@ public class Map extends GridPane
             //Assign pit
             wumpusMap[x][y].hasPit = true;
             wumpusMap[x][y].setMapChar('P');
-            wumpusMap[x][y].setMapChar('G');
         }
 
         //Assign wumpus location
@@ -110,37 +128,37 @@ public class Map extends GridPane
         y = random.nextInt(height);
         wumpusMap[x][y].hasWumpus = true;
         wumpusMap[x][y].mapChar = 'W';
-        wumpusMap[x][y].setMapChar('G');
+
         //assign stench
         if (x != width - 1) {
             wumpusMap[x + 1][y].hasStench = true;
-            wumpusMap[x + 1][y].mapChar = 'S';
-            wumpusMap[x][y].setMapChar('G');
+//            wumpusMap[x + 1][y].mapChar = 'S';
+            wumpusMap[x + 1][y].setMapChar('S');
         }
 
         if (x != 0) {
             wumpusMap[x - 1][y].hasStench = true;
-            wumpusMap[x - 1][y].mapChar = 'S';
-            wumpusMap[x][y].setMapChar('G');
+//            wumpusMap[x - 1][y].mapChar = 'S';
+            wumpusMap[x - 1][y].setMapChar('S');
         }
 
         if (y != height - 1) {
             wumpusMap[x][y + 1].hasStench = true;
             wumpusMap[x][y + 1].mapChar = 'S';
-            wumpusMap[x][y].setMapChar('G');
+            wumpusMap[x][y + 1].setMapChar('S');
         }
 
         if (y != 0) {
             wumpusMap[x][y - 1].hasStench = true;
-            wumpusMap[x][y - 1].mapChar = 'S';
-            wumpusMap[x][y].setMapChar('G');
+//            wumpusMap[x][y - 1].mapChar = 'S';
+            wumpusMap[x][y - 1].setMapChar('S');
         }
 
         //assign gold
         x = random.nextInt(width);
         y = random.nextInt(height);
         wumpusMap[x][y].hasGold = true;
-        wumpusMap[x][y].mapChar = 'G';
+//        wumpusMap[x][y].mapChar = 'G';
         wumpusMap[x][y].setMapChar('G');
 
     }
@@ -161,4 +179,30 @@ public class Map extends GridPane
 
     }
 
+    public void setSquareSize(double givenPrefHeight)
+    {
+        this.setPrefSize(givenPrefHeight, givenPrefHeight);
+        double cellSize = Math.round(givenPrefHeight / wumpusMap.length);
+        for(int i = 0; i < height; i++) {
+
+            for (int j = 0; j < width; j++) {
+
+                wumpusMap[i][j].setPrefSide((int)cellSize);
+
+            }
+        }
+    }
+
+    @Override
+    public void update()
+    {
+        for(int i = 0; i < height; i++) {
+
+            for (int j = 0; j < width; j++) {
+
+                wumpusMap[i][j].update();
+
+            }
+        }
+    }
 }

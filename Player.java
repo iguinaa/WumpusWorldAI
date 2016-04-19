@@ -3,7 +3,8 @@ import java.util.Random;
 /**
  * Created by awills on 4/10/16.
  */
-public class Player {
+public class Player implements Updateable
+{
 
     boolean hasArrow = true;
     boolean hasGold = false;
@@ -35,6 +36,18 @@ public class Player {
             move('u');
 
         //TODO hand off to analyze
+    }
+
+    @Override
+    public void update()
+    {
+        //TODO(Andrew): Get current square
+        //TODO(Andrew):
+        //TODO(Andrew): Check Square
+        //TODO(Andrew): Check Square
+        //TODO(Andrew): Check Square
+        //TODO(Andrew): Check Square
+        //TODO(Andrew): Check Square
     }
 
     private void checkSquare() {
@@ -103,5 +116,6 @@ public class Player {
     private void escape() {
 
     }
+
 
 }
