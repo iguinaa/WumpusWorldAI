@@ -26,14 +26,8 @@ public class Player implements Updateable
 
         gameMap = new Map(false);
 
-        //Flip a coin to determine starting direction
-        //This is necessary since the player currently has no information about the world to go on
-        int coinFlip = random.nextInt(2);
-
-        if(coinFlip == 1)
-            move('r');
-        else
-            move('u');
+        //Move right since that is the default direction for player to move
+        move('r');
 
         //TODO hand off to analyze
     }
