@@ -26,6 +26,8 @@ public class Player implements Updateable
 
         gameMap = new Map(false);
 
+        System.out.println("Current player square: " + currentX + ", " + currentY);
+
         //Move right since that is the default direction for player to move
         move('r');
 
@@ -94,6 +96,8 @@ public class Player implements Updateable
                         break;
             default:    break;
         }
+
+        System.out.println("Current player square: " + currentX + ", " + currentY);
 
         //Subtract from score for movement
         score--;
