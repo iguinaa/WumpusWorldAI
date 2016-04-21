@@ -24,6 +24,7 @@ public class Game implements Runnable, Updateable
     Stage primaryStage; // Window handle
     GamePane gamePane;    // root pane == container for a scene
     Scene scene;// This scene/canvas handle
+    boolean isRunning = true;
 
     public Game(Stage primaryStage)
     {
@@ -47,15 +48,18 @@ public class Game implements Runnable, Updateable
 
 
 
+
     }
 
     /** This creates all constructs and inits stuff for the game
      * */
     public int initialize()
     {
-        gamePane = new WumpusWorldPane();
+        gamePane = new WumpusWorldPane(WIDTH, HEIGHT);
         buildGamePane();
-        dbgPane((Pane)gamePane.getCenter(), Color.CYAN);
+        dbgPane((Pane)(gamePane.getMainPane()), Color.CYAN);
+        dbgPane((Pane)gamePane.getBottom(), Color.DARKKHAKI);
+        dbgPane((Pane)gamePane.getLeft(), Color.INDIANRED);
         scene = new Scene(gamePane, WIDTH, HEIGHT );
 
         primaryStage.setScene(scene);
@@ -66,9 +70,10 @@ public class Game implements Runnable, Updateable
 
     public void buildGamePane()
     {
-        gamePane.setPrefSize(1200, 1000);
-        gamePane.setMinSize(500,500);
-        gamePane.setAlignment(gamePane.mainPane, Pos.CENTER);
+//        gamePane.setPrefSize(WIDTH, HEIGHT);
+//        gamePane.setMinSize(500,500);
+        gamePane.setAlignment(gamePane.getMainPane(), Pos.CENTER);
+        ((WumpusWorldPane)gamePane).setLayout(WIDTH, HEIGHT);
         gamePane.setOnMouseClicked(new EventHandler<MouseEvent>()
         {
             @Override
@@ -82,11 +87,12 @@ public class Game implements Runnable, Updateable
     @Override
     public void update()
     {
+        System.out.println("Updating");
 
     }
-    protected void dbgPane(Pane p, Color c)
+    public static void dbgPane(Pane p, Color c)
     {
-        p.setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, new Insets(0,0,0,0) )));
+        p.setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, new Insets( 0, 0, 0, 0) )));
     }
 
 }

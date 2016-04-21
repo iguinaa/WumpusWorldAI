@@ -1,59 +1,90 @@
+
+
+import javafx.scene.layout.GridPane;
+
 /**
  * Created by Alexander Wills on 4/2/16.
  */
 
-import javafx.scene.layout.GridPane;
+import java.util.Random;
 
 //Generate map to play wumpusworld game on
-public class Map extends GridPane{
+public class Map extends GridPane implements Updateable
+{
 
-    Square[][] wumpusMap;
+    public Square[][] wumpusMap;
+    Random random = new Random();
     private int width;
     private int height;
-    private int def;	//set to 0 for a default map, 1 for random
+
+    //Square[][] wumpusMap;
+
 
     //Constructor
-    Map() {
+    Map(boolean blankMap) { //boolean tells us to seed the map or not
 
         wumpusMap = new Square[4][4];
         width = 4;
         height = 4;
 
-        seedMap();
+        if (blankMap) {
+            seedMap();
+        }
+        else{
+            for(int i = 0; i < height; i++) {
+
+                for (int j = 0; j < width; j++) {
+
+                    wumpusMap[i][j] = new Square();
+                    this.add(wumpusMap[i][j], i, j);
+
+                }
+            }
+        }
 
     }
 
+    //TODO add boolean here also
     //Construct map with specific dimensions
-    Map(int width, int height) {
-    	wumpusMap = new Square[width][height];
+    public Map(int width, int height, boolean blankMap) {
+
+        wumpusMap = new Square[width][height];
         this.width = width;
         this.height = height;
 
-        seedMap();
+        if (blankMap) {
+            seedMap();
+        } else {
+            for (int i = 0; i < height; i++) {
+
+                for (int j = 0; j < width; j++) {
+
+                    wumpusMap[i][j] = new Square();
+                    this.add(wumpusMap[i][j], i, j);
+
+                }
+            }
+        }
     }
 
-    //Construct map for a default map
-    Map(int def) {
-    	wumpusMap = new Square[4][4];
-        width = 4;
-        height = 4;
-    	if (def == 1)
-			seedMap();
-    	else
-    		defaultMap();
+    public Map(Map world)
+    {
+        // TODO(Andrew): make map duplication constructor. Need deep copy. Will probably suck cuz references.
     }
 
-    private void seedMap() {
 
-        int pitCount = (width * height) / 5; //Determine a number of pits to put into the game, trying /5 based on book map
+    private void seedMap(){
+
+        int pitCount = (width * height)/5; //Determine a number of pits to put into the game, trying /5 based on book map
         int x, y;
 
         //Fill the array with Square objects
-        for (int i = 0; i < height; i++) {
+        for(int i = 0; i < height; i++) {
 
             for (int j = 0; j < width; j++) {
 
-                wumpusMap[j][i] = new Square();
+                wumpusMap[i][j] = new Square();
+                this.add(wumpusMap[i][j], i, j);
 
             }
         }
@@ -62,134 +93,87 @@ public class Map extends GridPane{
         wumpusMap[0][0].isStart = true;
 
         //Assign pits
-        for (int i = 0; i < pitCount; i++) {
+        for(int i = 0; i < pitCount; i++)   {
 
-            //Prevent pit from generating in starting location
-            x = (int) (Math.random() * (width - 1) + 1);
-            y = (int) (Math.random() * (height - 1) + 1);
+            //exclude protagonist starting point
+            do {
+                x = random.nextInt(width);
+                y = random.nextInt(height);
+            } while (x == 0 && y == 0);
+
+            System.out.println("x " + x + " y " + y);
 
             //Assign breeze first so it doesn't write over pit
-            if (x != width - 1) {
+            //TODO still writing over it, need to handle this in a separate loop, maybe in a method
+            // in the Square class to set its char appropriately once all stats are assigned
+            if(x != width - 1) {
                 wumpusMap[x + 1][y].hasBreeze = true;
-                wumpusMap[x + 1][y].mapChar = 'B';
+                wumpusMap[x + 1][y].setMapChar('B');
 
             }
 
-            if (x != 0) {
+            if(x != 0) {
                 wumpusMap[x - 1][y].hasBreeze = true;
-                wumpusMap[x - 1][y].mapChar = 'B';
+                wumpusMap[x - 1][y].setMapChar('B');
 
             }
 
-            if (y != height - 1) {
+            if(y != height - 1) {
                 wumpusMap[x][y + 1].hasBreeze = true;
-                wumpusMap[x][y + 1].mapChar = 'B';
+                wumpusMap[x][y + 1].setMapChar('B');
 
             }
 
-            if (y != 0) {
+            if(y != 0) {
                 wumpusMap[x][y - 1].hasBreeze = true;
-                wumpusMap[x][y - 1].mapChar = 'B';
+                wumpusMap[x][y - 1].setMapChar('B');
 
             }
 
             //Assign pit
             wumpusMap[x][y].hasPit = true;
-            wumpusMap[x][y].mapChar = 'P';
-
+            wumpusMap[x][y].setMapChar('P');
         }
 
         //Assign wumpus location
-        x = (int) (Math.random() * (width - 1) + 1);
-        y = (int) (Math.random() * (height - 1) + 1);
+        x = random.nextInt(width);
+        y = random.nextInt(height);
         wumpusMap[x][y].hasWumpus = true;
         wumpusMap[x][y].mapChar = 'W';
 
         //assign stench
         if (x != width - 1) {
             wumpusMap[x + 1][y].hasStench = true;
-            wumpusMap[x + 1][y].mapChar = 'S';
-
+//            wumpusMap[x + 1][y].mapChar = 'S';
+            wumpusMap[x + 1][y].setMapChar('S');
         }
 
         if (x != 0) {
             wumpusMap[x - 1][y].hasStench = true;
-            wumpusMap[x - 1][y].mapChar = 'S';
-
+//            wumpusMap[x - 1][y].mapChar = 'S';
+            wumpusMap[x - 1][y].setMapChar('S');
         }
 
         if (y != height - 1) {
             wumpusMap[x][y + 1].hasStench = true;
             wumpusMap[x][y + 1].mapChar = 'S';
-
+            wumpusMap[x][y + 1].setMapChar('S');
         }
 
         if (y != 0) {
             wumpusMap[x][y - 1].hasStench = true;
-            wumpusMap[x][y - 1].mapChar = 'S';
-
+//            wumpusMap[x][y - 1].mapChar = 'S';
+            wumpusMap[x][y - 1].setMapChar('S');
         }
 
         //assign gold
-        x = (int) (Math.random() * (width - 1) + 1);
-        y = (int) (Math.random() * (height - 1) + 1);
+        x = random.nextInt(width);
+        y = random.nextInt(height);
         wumpusMap[x][y].hasGold = true;
-        wumpusMap[x][y].mapChar = 'G';
+//        wumpusMap[x][y].mapChar = 'G';
+        wumpusMap[x][y].setMapChar('G');
 
     }
-
-    private void defaultMap() {
-
-        //Fill the array with Square objects
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                wumpusMap[j][i] = new Square();
-            }
-        }
-
-        //Set starting point (this is location 1, 1 on the map)
-        wumpusMap[0][0].isStart = true;
-
-        //Assign breeze first, to (1,0) (3,0) (2,1) (1,2) (3,2) (2,3)
-        wumpusMap[1][0].hasBreeze = true;
-        wumpusMap[1][0].mapChar = 'B';
-        wumpusMap[3][0].hasBreeze = true;
-        wumpusMap[3][0].mapChar = 'B';
-        wumpusMap[2][1].hasBreeze = true;
-        wumpusMap[2][1].mapChar = 'B';
-        wumpusMap[1][2].hasBreeze = true;
-        wumpusMap[1][2].mapChar = 'B';
-        wumpusMap[3][2].hasBreeze = true;
-        wumpusMap[3][2].mapChar = 'B';
-        wumpusMap[2][3].hasBreeze = true;
-        wumpusMap[2][3].mapChar = 'B';
-
-        //Assign pits to (2,0) (2,2) (3,3)
-        wumpusMap[2][0].hasPit = true;
-        wumpusMap[2][0].mapChar = 'P';
-        wumpusMap[2][2].hasPit = true;
-        wumpusMap[2][2].mapChar = 'P';
-        wumpusMap[3][3].hasPit = true;
-        wumpusMap[3][3].mapChar = 'P';
-
-        //Assign wumpus location to (0,2)
-        wumpusMap[0][2].hasWumpus = true;
-        wumpusMap[0][2].mapChar = 'W';
-
-        //assign stench to (0,3) (0,1) (1,2)
-        wumpusMap[0][3].hasStench = true;
-        wumpusMap[0][3].mapChar = 'S';
-        wumpusMap[0][1].hasStench = true;
-        wumpusMap[0][1].mapChar = 'S';
-        wumpusMap[1][2].hasStench = true;
-        wumpusMap[1][2].mapChar = 'S';
-
-        //assign gold to (1,2)
-        wumpusMap[1][2].hasGold = true;
-        wumpusMap[1][2].mapChar = 'G';
-    }
-
-
 
     public void printMap() {
 
@@ -207,17 +191,30 @@ public class Map extends GridPane{
 
     }
 
-    private class Square {
+    public void setSquareSize(double givenPrefHeight)
+    {
+        this.setPrefSize(givenPrefHeight, givenPrefHeight);
+        double cellSize = Math.round(givenPrefHeight / wumpusMap.length);
+        for(int i = 0; i < height; i++) {
 
-        boolean hasWumpus = false;
-        boolean hasGold = false;
-        boolean hasStench = false;
-        boolean hasBreeze = false;
-        boolean hasPit = false;
-        boolean isStart = false;
+            for (int j = 0; j < width; j++) {
 
-        char mapChar = 'X';
+                wumpusMap[i][j].setPrefSide((int)cellSize);
+
+            }
+        }
     }
 
+    @Override
+    public void update()
+    {
+        for(int i = 0; i < height; i++) {
 
-}}
+            for (int j = 0; j < width; j++) {
+
+                wumpusMap[i][j].update();
+
+            }
+        }
+    }
+}
