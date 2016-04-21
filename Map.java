@@ -13,9 +13,9 @@ public class Map extends GridPane implements Updateable
 {
 
     public Square[][] wumpusMap;
+    Random random = new Random();
     private int width;
     private int height;
-    Random random = new Random();
 
     //Square[][] wumpusMap;
 
@@ -46,13 +46,25 @@ public class Map extends GridPane implements Updateable
 
     //TODO add boolean here also
     //Construct map with specific dimensions
-    public Map(int width, int height) {
+    public Map(int width, int height, boolean blankMap) {
 
         wumpusMap = new Square[width][height];
         this.width = width;
         this.height = height;
 
-        seedMap();
+        if (blankMap) {
+            seedMap();
+        } else {
+            for (int i = 0; i < height; i++) {
+
+                for (int j = 0; j < width; j++) {
+
+                    wumpusMap[i][j] = new Square();
+                    this.add(wumpusMap[i][j], i, j);
+
+                }
+            }
+        }
     }
 
     public Map(Map world)
