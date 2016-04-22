@@ -13,10 +13,6 @@ public class Square extends HBox implements Updateable
 
 
     public int prefSide;
-
-    //player knowledge
-    boolean wasVisited; // NOTE: should these be stored here? could store in player, but then couldnt update images easily
-
     // TODO(andrew): edit these if time allows
     // some of these can stack and some cant. ex: wumpus && pit == FALSE
     boolean hasWumpus = false;
@@ -25,11 +21,12 @@ public class Square extends HBox implements Updateable
     boolean hasBreeze = false;
     boolean hasPit = false;
     boolean isStart = false;
-
     Image testBG;
     ImageView testBGView;
-
     char mapChar;
+    //player knowledge
+    private boolean wasVisited; // NOTE: should these be stored here? could store in player, but then couldnt update images easily
+    private int wumpusDangerScore = 0, pitDangerScore = 0;
 
     public Square ()
     {
@@ -45,18 +42,17 @@ public class Square extends HBox implements Updateable
     }
 
 
-    public void setLayout()
-    {
-        // TODO: Stub
-
-    }
-
     public Square (char mapChar)
     {
         super(10); // NOTE: 10 pixels border?
         this.mapChar = mapChar;
         setBG();
         this.getChildren().add(testBGView);
+    }
+
+    public void setLayout() {
+        // TODO: Stub
+
     }
 
     public void setMapChar(char mapChar)
@@ -94,5 +90,29 @@ public class Square extends HBox implements Updateable
         //TODO(Andrew): Update images based on 'knowledge' not fact
 
 
+    }
+
+    public boolean isWasVisited() {
+        return wasVisited;
+    }
+
+    public void setWasVisited(boolean wasVisited) {
+        this.wasVisited = wasVisited;
+    }
+
+    public int getPitDangerScore() {
+        return pitDangerScore;
+    }
+
+    public void setPitDangerScore(int pitDangerScore) {
+        this.pitDangerScore = pitDangerScore;
+    }
+
+    public int getWumpusDangerScore() {
+        return wumpusDangerScore;
+    }
+
+    public void setWumpusDangerScore(int wumpusDangerScore) {
+        this.wumpusDangerScore = wumpusDangerScore;
     }
 }
