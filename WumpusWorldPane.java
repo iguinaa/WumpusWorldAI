@@ -32,7 +32,7 @@ public class WumpusWorldPane extends GamePane
         worldMap = new Map(true);
         worldMapIndex = 0;
 
-        playerMap = new Map(false);  // TODO(Andrew): Change this constructor before release
+        playerMap = new Map(false);
         playerMapIndex = 1;
 
         initPanes(width, height);
@@ -50,8 +50,6 @@ public class WumpusWorldPane extends GamePane
 
 //      this.getMainPane().getChildren().addAll(worldMap, playerMap);
 
-        bottom.getChildren().add(new Square()); // TODO: Remove
-        options.getChildren().add(new Square()); // TODO: Remove
     }
 
     /** This method should contain all resizing attempts */
