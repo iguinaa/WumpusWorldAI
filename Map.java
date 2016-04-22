@@ -16,26 +16,28 @@ public class Map extends GridPane implements Updateable
     Random random = new Random();
     private int width;
     private int height;
+    public boolean isPlayerMap;
 
-    //Square[][] wumpusMap;
 
 
     //Constructor
-    Map(boolean blankMap) { //boolean tells us to seed the map or not
+    Map(boolean seeded) { //boolean tells us to seed the map or not
 
         wumpusMap = new Square[4][4];
         width = 4;
         height = 4;
 
-        if (blankMap) {
+        if (seeded) {
+            isPlayerMap = false;
             seedMap();
         }
         else{
+            isPlayerMap = true;
             for(int i = 0; i < height; i++) {
 
                 for (int j = 0; j < width; j++) {
 
-                    wumpusMap[i][j] = new Square();
+                    wumpusMap[i][j] = new Square(isPlayerMap, i, j);
                     this.add(wumpusMap[i][j], i, j);
 
                 }
@@ -44,7 +46,6 @@ public class Map extends GridPane implements Updateable
 
     }
 
-    //TODO add boolean here also
     //Construct map with specific dimensions
     public Map(int width, int height, boolean blankMap) {
 
@@ -59,7 +60,7 @@ public class Map extends GridPane implements Updateable
 
                 for (int j = 0; j < width; j++) {
 
-                    wumpusMap[i][j] = new Square();
+                    wumpusMap[i][j] = new Square(isPlayerMap, i, j);
                     this.add(wumpusMap[i][j], i, j);
 
                 }
@@ -67,15 +68,10 @@ public class Map extends GridPane implements Updateable
         }
     }
 
-    public Map(Map world)
-    {
-        // TODO(Andrew): make map duplication constructor. Need deep copy. Will probably suck cuz references.
-    }
-
 
     private void seedMap(){
 
-        int pitCount = (width * height)/5; //Determine a number of pits to put into the game, trying /5 based on book map
+    int pitCount = (width * height)/5; //Determine a number of pits to put into the game, trying /5 based on book map
         int x, y;
 
         //Fill the array with Square objects
@@ -83,7 +79,7 @@ public class Map extends GridPane implements Updateable
 
             for (int j = 0; j < width; j++) {
 
-                wumpusMap[i][j] = new Square();
+                wumpusMap[i][j] = new Square(isPlayerMap, i, j);
                 this.add(wumpusMap[i][j], i, j);
 
             }
@@ -107,61 +103,63 @@ public class Map extends GridPane implements Updateable
             //TODO still writing over it, need to handle this in a separate loop, maybe in a method
             // in the Square class to set its char appropriately once all stats are assigned
             if(x != width - 1) {
-                wumpusMap[x + 1][y].hasBreeze = true;
+//                wumpusMap[x + 1][y].hasBreeze = true;
                 wumpusMap[x + 1][y].setMapChar('B');
 
             }
 
             if(x != 0) {
-                wumpusMap[x - 1][y].hasBreeze = true;
+//                wumpusMap[x - 1][y].hasBreeze = true;
                 wumpusMap[x - 1][y].setMapChar('B');
 
             }
 
             if(y != height - 1) {
-                wumpusMap[x][y + 1].hasBreeze = true;
+//                wumpusMap[x][y + 1].hasBreeze = true;
                 wumpusMap[x][y + 1].setMapChar('B');
 
             }
 
             if(y != 0) {
-                wumpusMap[x][y - 1].hasBreeze = true;
+//                wumpusMap[x][y - 1].hasBreeze = true;
                 wumpusMap[x][y - 1].setMapChar('B');
 
             }
 
             //Assign pit
-            wumpusMap[x][y].hasPit = true;
+//            wumpusMap[x][y].hasPit = true;
             wumpusMap[x][y].setMapChar('P');
         }
 
         //Assign wumpus location
         x = random.nextInt(width);
         y = random.nextInt(height);
-        wumpusMap[x][y].hasWumpus = true;
+//        wumpusMap[x][y].hasWumpus = true;
         wumpusMap[x][y].mapChar = 'W';
+        wumpusMap[x][y].setMapChar('W');
 
         //assign stench
+
         if (x != width - 1) {
-            wumpusMap[x + 1][y].hasStench = true;
+//            wumpusMap[x + 1][y].hasStench = true;
 //            wumpusMap[x + 1][y].mapChar = 'S';
             wumpusMap[x + 1][y].setMapChar('S');
         }
 
         if (x != 0) {
-            wumpusMap[x - 1][y].hasStench = true;
+//            wumpusMap[x - 1][y].hasStench = true;
 //            wumpusMap[x - 1][y].mapChar = 'S';
             wumpusMap[x - 1][y].setMapChar('S');
         }
 
         if (y != height - 1) {
-            wumpusMap[x][y + 1].hasStench = true;
+//            wumpusMap[x][y + 1].hasStench = true;
             wumpusMap[x][y + 1].mapChar = 'S';
             wumpusMap[x][y + 1].setMapChar('S');
         }
 
         if (y != 0) {
-            wumpusMap[x][y - 1].hasStench = true;
+//            wumpusMap[x][y - 1].hasStench = true;
 //            wumpusMap[x][y - 1].mapChar = 'S';
             wumpusMap[x][y - 1].setMapChar('S');
         }
@@ -169,7 +167,7 @@ public class Map extends GridPane implements Updateable
         //assign gold
         x = random.nextInt(width);
         y = random.nextInt(height);
-        wumpusMap[x][y].hasGold = true;
+//        wumpusMap[x][y].hasGold = true;
 //        wumpusMap[x][y].mapChar = 'G';
         wumpusMap[x][y].setMapChar('G');
 

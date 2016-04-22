@@ -1,11 +1,22 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
  * Created by awills on 4/10/16.
  */
+enum Action
+{
+    move,
+    turnL,
+    turnR,
+    grab,
+    shoot,
+}
+
 public class Player implements Updateable
 {
 
+    char facingDirection; // r, l, u, d
     boolean hasArrow = true;
     boolean hasGold = false;
     int currentX = 0;
@@ -22,14 +33,17 @@ public class Player implements Updateable
     int score = 0;
 
 
-    public Player(/*Map currentMap*/) {
+    public Player(/*Map currentMap*/)
+    {
 
         gameMap = new Map(false);
 
         System.out.println("Current player square: " + currentX + ", " + currentY);
 
+        facingDirection = 'r';
+
         //Move right since that is the default direction for player to move
-        move('r');
+        int hitBump = moveForward(); //TODO(Andrew): should probably move this out of constructor
 
         //TODO hand off to analyze
     }
@@ -37,45 +51,43 @@ public class Player implements Updateable
     @Override
     public void update()
     {
-        //TODO(Andrew): Get current square
-        //TODO(Andrew):
-        //TODO(Andrew): Check Square
-        //TODO(Andrew): Check Square
-        //TODO(Andrew): Check Square
-        //TODO(Andrew): Check Square
-        //TODO(Andrew): Check Square
+//        performNextAction();  //NOTE: Maybe move somewhere else in the order?
+//        perceiveEnvironment();
+//        updateKnowledge();
+//        DetermineNextAction();
     }
 
-    private void checkSquare() {
+    private void checkSquare(Square s) {
+        ArrayList<Character> seen = s.getPerceptions();
+//        if (seen.contains()) {
+//
+//            //TODO print to GUI
+//            //TODO(Andrew) Update Map only to update GUI.
+//            System.out.println("Wumpus got you!");
+//            System.exit(0);
+//
+//        }
 
-        if (gameMap.wumpusMap[currentX][currentY].hasWumpus) {
-
-            //TODO print to GUI
-            System.out.println("Wumpus got you!");
-            System.exit(0);
-
-        }
-
-        if (gameMap.wumpusMap[currentX][currentY].hasPit) {
-
-            //TODO print to GUI
-            System.out.println("You fell in a pit!");
-            System.exit(0);
-
-        }
+//        if (gameMap.wumpusMap[currentX][currentY].hasPit) {
+//
+//            //TODO print to GUI
+//            System.out.println("You fell in a pit!");
+//            System.exit(0);
+//
+//        }
 
         //TODO track stench to try to identify where wumpus is
-        if (gameMap.wumpusMap[currentX][currentY].hasStench) {
+        if (seen.contains('S')) {
 
         }
 
         //TODO track breeze to try to identify pits
-        if (gameMap.wumpusMap[currentX][currentY].hasBreeze) {
+        if (seen.contains('B')) {
 
         }
 
         //TODO grab gold
-        if (gameMap.wumpusMap[currentX][currentY].hasGold) {
+        if (seen.contains('G')) {
 
             hasGold = true;
 
@@ -103,6 +115,39 @@ public class Player implements Updateable
         score--;
 
     }
+
+    /** Agent Actions */
+    public void grab()
+    {
+        //TODO stub
+    }
+    public int shoot()
+    {
+        //TODO Stub
+        return 0;
+    }
+    public char turn90L()
+    {
+        //TODO stub
+        char newDirection = 'r';
+        return newDirection;
+    }
+    public char turn90R()
+    {
+        //TODO stub
+        char newDirection = 'r';
+        return newDirection;
+    }
+    public int moveForward()
+    {
+        //TODO stub
+        move(facingDirection);
+        return 0;
+    }
+
+    /** Perceive environment */
+
+
 
     //TODO shoot wumpus
 
