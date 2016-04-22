@@ -24,13 +24,6 @@ public class Player implements Updateable
 
     public Player(/*Map currentMap*/) {
 
-
-        //TODO remove this TODO!
-
-
-
-
-
         gameMap = new Map(false);
 
         System.out.println("Current player square: " + currentX + ", " + currentY);
