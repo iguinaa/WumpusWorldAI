@@ -23,9 +23,10 @@ public class Square extends HBox implements Updateable
     Image testBG;
     ImageView testBGView;
     char mapChar;
+
     //player knowledge
     private boolean wasVisited; // NOTE: should these be stored here? could store in player, but then couldnt update images easily
-    private int wumpusDangerScore = 0, pitDangerScore = 0;
+    private int wumpusDangerScore = 0, pitDangerScore = 0, totalDangerScore = 0;
 
     public Square ()
     {
@@ -103,7 +104,14 @@ public class Square extends HBox implements Updateable
     }
 
     public void setPitDangerScore(int pitDangerScore) {
-        this.pitDangerScore = pitDangerScore;
+        this.pitDangerScore += pitDangerScore;
+        totalDangerScore = this.pitDangerScore + wumpusDangerScore;
+    }
+
+    public void resetPitDangerScore() {
+
+        pitDangerScore = 0;
+
     }
 
     public int getWumpusDangerScore() {
@@ -113,5 +121,14 @@ public class Square extends HBox implements Updateable
     //Change score up or down based on new data
     public void setWumpusDangerScore(int wumpusDangerScore) {
         this.wumpusDangerScore += wumpusDangerScore;
+        totalDangerScore = this.wumpusDangerScore + pitDangerScore;
+    }
+
+    public void resetWumpusDangerScore() {
+        wumpusDangerScore = 0;
+    }
+
+    public int getTotalDangerScore() {
+        return totalDangerScore;
     }
 }
