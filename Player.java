@@ -64,13 +64,39 @@ public class Player implements Updateable
 
         }
 
-        //TODO track stench to try to identify where wumpus is
+        //track stench to try to identify where wumpus is
         if (gameMap.wumpusMap[currentX][currentY].hasStench) {
+
+            //change score of suspect squares if the square hasn't already been visited and is therefore safe
+            if ((currentX != gameMap.getWidth() - 1) && (!gameMap.wumpusMap[currentX + 1][currentY].isWasVisited())) {
+                gameMap.wumpusMap[currentX + 1][currentY].setWumpusDangerScore(-1);
+
+            }
+
+            if ((currentX != 0) && (!gameMap.wumpusMap[currentX - 1][currentY].isWasVisited())) {
+                gameMap.wumpusMap[currentX - 1][currentY].setWumpusDangerScore(-1);
+
+            }
+
+            if ((currentY != gameMap.getHeight() - 1) && (!gameMap.wumpusMap[currentX][currentY + 1].isWasVisited())) {
+                gameMap.wumpusMap[currentX][currentY + 1].setWumpusDangerScore(-1);
+
+            }
+
+            if ((currentY != 0) && (!gameMap.wumpusMap[currentX][currentY - 1].isWasVisited())) {
+                gameMap.wumpusMap[currentX][currentY - 1].setWumpusDangerScore(-1);
+
+            }
 
         }
 
+        //TODO reset scores when wumpus is found?
+
         //TODO track breeze to try to identify pits
         if (gameMap.wumpusMap[currentX][currentY].hasBreeze) {
+
+            //TODO change score of suspect squares
+
 
         }
 

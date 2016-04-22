@@ -11,7 +11,6 @@ public class Square extends HBox implements Updateable
 {
     public static final int DEFAULT_SIDE = 100; // Default side length
 
-
     public int prefSide;
     // TODO(andrew): edit these if time allows
     // some of these can stack and some cant. ex: wumpus && pit == FALSE
@@ -40,7 +39,6 @@ public class Square extends HBox implements Updateable
         this.getChildren().add(testBGView);
         setLayout();
     }
-
 
     public Square (char mapChar)
     {
@@ -112,7 +110,8 @@ public class Square extends HBox implements Updateable
         return wumpusDangerScore;
     }
 
+    //Change score up or down based on new data
     public void setWumpusDangerScore(int wumpusDangerScore) {
-        this.wumpusDangerScore = wumpusDangerScore;
+        this.wumpusDangerScore += wumpusDangerScore;
     }
 }
