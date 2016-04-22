@@ -40,10 +40,6 @@ public class Player implements Updateable
         //TODO(Andrew): Get current square
         //TODO(Andrew):
         //TODO(Andrew): Check Square
-        //TODO(Andrew): Check Square
-        //TODO(Andrew): Check Square
-        //TODO(Andrew): Check Square
-        //TODO(Andrew): Check Square
     }
 
     private void checkSquare() {
@@ -52,7 +48,8 @@ public class Player implements Updateable
 
             //TODO print to GUI
             System.out.println("Wumpus got you!");
-            System.exit(0);
+            score -= 1000;
+            exit();
 
         }
 
@@ -60,7 +57,8 @@ public class Player implements Updateable
 
             //TODO print to GUI
             System.out.println("You fell in a pit!");
-            System.exit(0);
+            score -= 1000;
+            exit();
 
         }
 
@@ -120,9 +118,10 @@ public class Player implements Updateable
 
         }
 
-        //TODO grab gold
+        //grab gold
         if (gameMap.wumpusMap[currentX][currentY].hasGold) {
 
+            //Player doesn't score points for gold until they exit dungeon
             hasGold = true;
 
         }
@@ -150,7 +149,15 @@ public class Player implements Updateable
 
     }
 
-    //TODO shoot wumpus
+    //shoot wumpus, must provide a direction to aim
+    private void shootWumpus(char direction) {
+
+        hasArrow = false;
+        score -= 10;
+
+        //TODO check if wumpus is dead and update map
+
+    }
 
     //TODO map dungeon
 
@@ -158,6 +165,18 @@ public class Player implements Updateable
 
     //TODO leave dungeon
     private void escape() {
+
+        if (hasGold)
+            score += 1000;
+
+        exit();
+
+    }
+
+    private void exit() {
+
+        System.out.println("Final Score: " + score);
+        System.exit(0);
 
     }
 
