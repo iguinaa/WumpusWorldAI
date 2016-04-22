@@ -76,13 +76,59 @@ public class Player implements Updateable
 //
 //        }
 
+        //TODO track if wumpus or pit so you lose 1000 points and game over
+
         //TODO track stench to try to identify where wumpus is
         if (seen.contains('S')) {
 
+            //change score of suspect squares if the square hasn't already been visited and is therefore safe
+            if ((currentX != gameMap.getWidth() - 1) && (!gameMap.wumpusMap[currentX + 1][currentY].isWasVisited())) {
+                gameMap.wumpusMap[currentX + 1][currentY].setWumpusDangerScore(-1);
+
+            }
+
+            if ((currentX != 0) && (!gameMap.wumpusMap[currentX - 1][currentY].isWasVisited())) {
+                gameMap.wumpusMap[currentX - 1][currentY].setWumpusDangerScore(-1);
+
+            }
+
+            if ((currentY != gameMap.getHeight() - 1) && (!gameMap.wumpusMap[currentX][currentY + 1].isWasVisited())) {
+                gameMap.wumpusMap[currentX][currentY + 1].setWumpusDangerScore(-1);
+
+            }
+
+            if ((currentY != 0) && (!gameMap.wumpusMap[currentX][currentY - 1].isWasVisited())) {
+                gameMap.wumpusMap[currentX][currentY - 1].setWumpusDangerScore(-1);
+
+            }
+
         }
+
+        //TODO reset scores when wumpus is found?
 
         //TODO track breeze to try to identify pits
         if (seen.contains('B')) {
+
+            //change score of suspect squares if the square hasn't already been visited and is therefore safe
+            if ((currentX != gameMap.getWidth() - 1) && (!gameMap.wumpusMap[currentX + 1][currentY].isWasVisited())) {
+                gameMap.wumpusMap[currentX + 1][currentY].setPitDangerScore(-1);
+
+            }
+
+            if ((currentX != 0) && (!gameMap.wumpusMap[currentX - 1][currentY].isWasVisited())) {
+                gameMap.wumpusMap[currentX - 1][currentY].setPitDangerScore(-1);
+
+            }
+
+            if ((currentY != gameMap.getHeight() - 1) && (!gameMap.wumpusMap[currentX][currentY + 1].isWasVisited())) {
+                gameMap.wumpusMap[currentX][currentY + 1].setPitDangerScore(-1);
+
+            }
+
+            if ((currentY != 0) && (!gameMap.wumpusMap[currentX][currentY - 1].isWasVisited())) {
+                gameMap.wumpusMap[currentX][currentY - 1].setPitDangerScore(-1);
+
+            }
 
         }
 
@@ -124,6 +170,11 @@ public class Player implements Updateable
     public int shoot()
     {
         //TODO Stub
+        hasArrow = false;
+        score -= 10;
+
+        //TODO check if wumpus is dead and update map
+
         return 0;
     }
     public char turn90L()
@@ -157,6 +208,8 @@ public class Player implements Updateable
 
     //TODO leave dungeon
     private void escape() {
+
+        System.out.println("Final Score: " + score);
 
     }
 

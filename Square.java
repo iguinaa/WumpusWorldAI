@@ -36,7 +36,7 @@ public class Square extends HBox implements Updateable
     private boolean wasVisited; // NOTE: should these be stored here? could store in player, but then couldnt update images easily
     public boolean isStart = false;// This must be settable by player or map
     public boolean isPlayerMap = false;
-
+    private int wumpusDangerScore = 0, pitDangerScore = 0, totalDangerScore = 0;
 
     // NOTE(Andrew): perceptions should be a subset of attributes.
     public ArrayList<Character> attributes;
@@ -456,5 +456,46 @@ public class Square extends HBox implements Updateable
         //TODO(Andrew): Update images based on 'knowledge' not fact
 
 
+    }
+
+    public boolean isWasVisited() {
+        return wasVisited;
+    }
+
+    public void setWasVisited(boolean wasVisited) {
+        this.wasVisited = wasVisited;
+    }
+
+    public int getPitDangerScore() {
+        return pitDangerScore;
+    }
+
+    public void setPitDangerScore(int pitDangerScore) {
+        this.pitDangerScore += pitDangerScore;
+        totalDangerScore = this.pitDangerScore + wumpusDangerScore;
+    }
+
+    public void resetPitDangerScore() {
+
+        pitDangerScore = 0;
+
+    }
+
+    public int getWumpusDangerScore() {
+        return wumpusDangerScore;
+    }
+
+    //Change score up or down based on new data
+    public void setWumpusDangerScore(int wumpusDangerScore) {
+        this.wumpusDangerScore += wumpusDangerScore;
+        totalDangerScore = this.wumpusDangerScore + pitDangerScore;
+    }
+
+    public void resetWumpusDangerScore() {
+        wumpusDangerScore = 0;
+    }
+
+    public int getTotalDangerScore() {
+        return totalDangerScore;
     }
 }
