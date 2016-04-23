@@ -16,23 +16,8 @@ public class Main extends Application {
     {
         primaryStage.setTitle("Wumpus World");
 
-        /* test code */
-//        Pane root = new BorderPane();
-//        primaryStage.setScene(new Scene(root, 300, 275));
-//        primaryStage.show();
-        /* end test */
-
-//        Map wumpusMap = new Map();
-//        wumpusMap.printMap();
-
-
-
-
         Game wumpus = new Game(primaryStage);
-        Player player = new Player();
         wumpus.run();
-
-
     }
 
 

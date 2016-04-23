@@ -1,5 +1,6 @@
 //package sample;
 
+import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -118,6 +119,7 @@ public class Square extends HBox implements Updateable
 
     public void setLayout()
     {
+        this.setPadding(new Insets(2,2,2,2));
         Game.dbgPane(imgContainer, Color.DARKSLATEGRAY); // TODO: Remove
         if(x == 0 && y == 1)
         {
@@ -321,6 +323,8 @@ public class Square extends HBox implements Updateable
                 System.out.println("Invalid Character");
             }
         }
+        updateAttributes();
+        updatePerceptions();
         setBG();
     }
 
@@ -369,6 +373,8 @@ public class Square extends HBox implements Updateable
                 System.out.println("Invalid Character");
             }
         }
+        updateAttributes();
+        updatePerceptions();
         setBG();
     }
 

@@ -15,6 +15,17 @@ public class Map extends GridPane implements Updateable
     public Square[][] wumpusMap;
     Random random = new Random();
     private int width;
+
+    public int getNumRows()
+    {
+        return height;
+    }
+
+    public int getNumCols()
+    {
+        return width;
+    }
+
     private int height;
     public boolean isPlayerMap;
 
@@ -44,6 +55,9 @@ public class Map extends GridPane implements Updateable
 
                 }
             }
+
+            wumpusMap[0][0].setAsStart();
+            wumpusMap[0][0].setMapChar('A');
 //            for(int i = 0; i < height; i++) {
 //
 //                for (int j = 0; j < height; j++) {
@@ -76,7 +90,12 @@ public class Map extends GridPane implements Updateable
                     this.add(wumpusMap[i][j], toRealX(i), toRealY(j));
 
                 }
+
             }
+
+            wumpusMap[0][0].setAsStart();
+            wumpusMap[0][0].setMapChar('A');
+
 //            for(int i = 0; i < height; i++) {
 //
 //                for (int j = 0; j < height; j++) {
@@ -119,6 +138,7 @@ public class Map extends GridPane implements Updateable
         //Set starting point (this is location 1, 1 on the map)
 //        wumpusMap[0][0].isStart = true;
         wumpusMap[0][0].setAsStart();
+        wumpusMap[0][0].setMapChar('A');
 
         //Assign pits
         for(int i = 0; i < pitCount; i++)   {
@@ -175,7 +195,7 @@ public class Map extends GridPane implements Updateable
 //        wumpusMap[x][y].hasWumpus = true;
         wumpusMap[x][y].mapChar = 'W';
         wumpusMap[x][y].setMapChar('W');
-        wumpusMap[x][y].addMapChar('S');
+        wumpusMap[x][y].setMapChar('S');
 
         //assign stench
 
@@ -193,7 +213,7 @@ public class Map extends GridPane implements Updateable
 
         if (y != height - 1) {
 //            wumpusMap[x][y + 1].hasStench = true;
-            wumpusMap[x][y + 1].mapChar = 'S';
+//            wumpusMap[x][y + 1].mapChar = 'S';
             wumpusMap[x][y + 1].setMapChar('S');
         }
 

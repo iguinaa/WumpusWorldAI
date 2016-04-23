@@ -21,6 +21,7 @@ public class Player implements Updateable
     boolean hasGold = false;
     int currentX = 0;
     int currentY = 0;
+    boolean isHuman;
     Map gameMap;
     Random random = new Random();
 
@@ -33,9 +34,9 @@ public class Player implements Updateable
     int score = 0;
 
 
-    public Player(/*Map currentMap*/)
+    public Player(boolean isHuman)
     {
-
+        this.isHuman = isHuman;
         gameMap = new Map(false);
 
         System.out.println("Current player square: " + currentX + ", " + currentY);
@@ -46,6 +47,11 @@ public class Player implements Updateable
         int hitBump = moveForward(); //TODO(Andrew): should probably move this out of constructor
 
         //TODO hand off to analyze
+    }
+
+    public void setMap(Map m)
+    {
+        gameMap = m;
     }
 
     @Override
