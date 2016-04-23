@@ -100,7 +100,7 @@ public class Map extends GridPane implements Updateable
             System.out.println("x " + x + " y " + y);
 
             //Assign breeze first so it doesn't write over pit
-            //TODO still writing over it, need to handle this in a separate loop, maybe in a method
+
             // in the Square class to set its char appropriately once all stats are assigned
             if(x != width - 1) {
 //                wumpusMap[x + 1][y].hasBreeze = true;

@@ -25,8 +25,8 @@ public class Square extends HBox implements Updateable
             "breeze.png", // B 3
             "gold.png", // G 4
             "linkbow.png",  // A 5
-            "mystery2.png",  // !(V) 6   could use bush.png
-            "tile.png" //for empty squares on main map  //TODO Andrew: how do I use this?
+            "tile.png",  // !(V) 6   could use bush.png
+            "mystery2.png" //for empty squares on main map  //TODO Andrew: how do I use this?
     };
     public int prefSide;
     public int x;
