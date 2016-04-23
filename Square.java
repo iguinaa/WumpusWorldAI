@@ -58,10 +58,10 @@ public class Square extends HBox implements Updateable
     public static final int NUM_IMAGES = 7;
     static String[] imagePaths = {
             "ganon.png", // W 0
-            "notblank.jpg", // S 1
-            "notblank.jpg", // P 2
-            "notblank.jpg", // B 3
-            "notblank.jpg", // G 4
+            "stench.png", // S 1
+            "Sarlacc.jpg", // P 2
+            "breeze.png", // B 3
+            "gold.png", // G 4
             "linkbow.png",  // A 5
             "mystery2.png"  // !(V) 6   could use bush.png
     };

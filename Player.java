@@ -116,11 +116,10 @@ public class Player implements Updateable
 
         //TODO reset scores when wumpus is found?
 
-        //TODO track breeze to try to identify pits
+        //track breeze to try to identify pits
         if (seen.contains('B')) {
 
-            //change score of suspect squares
-            //change score of suspect squares if the square hasn't already been visited and is therefore safe
+            //change score of suspect squares if the square hasn't already been visited (and is therefore safe)
             if ((currentX != gameMap.getWidth() - 1) && (!gameMap.wumpusMap[currentX + 1][currentY].isWasVisited())) {
                 gameMap.wumpusMap[currentX + 1][currentY].setPitDangerScore(-1);
 
@@ -143,11 +142,12 @@ public class Player implements Updateable
 
         }
 
-        //TODO grab gold
+        //grab gold
         if (seen.contains('G')) {
 
             hasGold = true;
 
+            //TODO head to exit
         }
     }
 
