@@ -1,8 +1,11 @@
 //package sample;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -107,6 +110,7 @@ public class Square extends HBox implements Updateable
         setLayout();
         setMapChar('V');
         setBG();
+        dbgHoverTest();
     }
 
     public ArrayList<Character> getAttributes() {
@@ -516,4 +520,41 @@ public class Square extends HBox implements Updateable
     public int getTotalDangerScore() {
         return totalDangerScore;
     }
+
+    public void dbgHoverTest()
+    {
+        this.setOnMouseEntered(new EventHandler<MouseEvent>
+                () {
+
+            @Override
+            public void handle(MouseEvent t) {
+                show(true);
+            }
+        });
+
+        this.setOnMouseExited(new EventHandler<MouseEvent>
+                () {
+
+            @Override
+            public void handle(MouseEvent t) {
+                show(false);
+            }
+        });
+    }
+
+    public void show(boolean show)  // TODO(Andrew): Comment out for release
+    {
+        if(show)
+        {
+            String out = "";
+            for (Character c : attributes)
+            {
+                out = out + c.toString() + ", ";
+            }
+            out = out + "\n";
+            Game.addToLog(out);
+        }
+    }
+
+
 }

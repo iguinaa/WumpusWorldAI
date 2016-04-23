@@ -118,6 +118,27 @@ public class WumpusWorldPane extends GamePane implements Updateable
 
     }
 
+    public void passPlayer(Player p)
+    {
+        Square[][] map = getWorldMap().wumpusMap;
+        for(int i = 0 ; i < map.length; i++)
+        {
+            for(int j=0; j < map[i].length; j++)
+            {
+                if(i == p.currentX && j == p.currentY)
+                {
+                    map[i][j].setMapChar('P');
+                }
+                else
+                {
+                    map[i][j].removeMapChar('P');
+                }
+            }
+
+        }
+
+    }
+
     public GridPane getWorldGrid()
     {
         return ((GridPane)worldMap);

@@ -23,7 +23,10 @@ public class Player implements Updateable
     int currentY = 0;
     boolean isHuman;
     Map gameMap;
+    Square currentSquare;
     Random random = new Random();
+    boolean needsUpdate; // aka Has performed action
+    boolean querySquare;
 
     /*Scoring:
     * +1000 points for climbing out of the cave with the gold
@@ -38,13 +41,14 @@ public class Player implements Updateable
     {
         this.isHuman = isHuman;
         gameMap = new Map(false);
-
+        currentSquare = null;
         System.out.println("Current player square: " + currentX + ", " + currentY);
 
         facingDirection = 'r';
-
+        needsUpdate = false;
         //Move right since that is the default direction for player to move
-        int hitBump = moveForward(); //TODO(Andrew): should probably move this out of constructor
+        // NOTE(Andrew) discussed that this should be removed. Just assume perfect knowledge of map bounds
+        int hitBump = moveForward();
 
         //TODO hand off to analyze
     }
@@ -54,9 +58,18 @@ public class Player implements Updateable
         gameMap = m;
     }
 
+
     @Override
     public void update()
     {
+        if(isHuman)
+        {
+           // do stuff
+            gameMap.update();
+            needsUpdate = false;
+
+            return;
+        }
 //        performNextAction();  //NOTE: Maybe move somewhere else in the order?
 //        perceiveEnvironment();
 //        updateKnowledge();
@@ -64,7 +77,7 @@ public class Player implements Updateable
     }
 
     private void checkSquare(Square s) {
-        ArrayList<Character> seen = s.getPerceptions();
+        ArrayList<Character> seen = currentSquare.getPerceptions();
 //        if (seen.contains()) {
 //
 //            //TODO print to GUI
@@ -85,14 +98,6 @@ public class Player implements Updateable
         //TODO track if wumpus or pit so you lose 1000 points and game over
 
         //TODO track stench to try to identify where wumpus is
-        if (seen.contains('S')) {
-
-            //TODO print to GUI
-            System.out.println("You fell in a pit!");
-            score -= 1000;
-            //exit();
-
-        }
 
         //track stench to try to identify where wumpus is
         if (seen.contains('S')) {
@@ -161,7 +166,7 @@ public class Player implements Updateable
 
         switch (direction)  {
 
-            case 'r':   currentX++;
+            case 'r':   currentX++; //TODO(Andrew): These need boundary checking I think?
                         break;
             case 'l':   currentX--;
                         break;
@@ -229,6 +234,49 @@ public class Player implements Updateable
         System.out.println("Final Score: " + score);
 
     }
+    public void handleHumanCommand(char action) // u = up, d = down, l = left, r = right, f = fire, e = exit maze
+    {
+        switch (action)
+        {
+            case 'u':
+            case 'd':
+            case 'l':
+            case 'r':
+            {
+                Game.addToLog("shouldve moved a square");
+                if(facingDirection != action)
+                {
+                    Game.addToLog("WASTN FACING THE RIGHT WAY!\n");
+                    facingDirection = action;
+                }
+                else
+                {
+                    Game.addToLog("We're about to enter the moveeeee method\n");
+                    move(action);
+                }
+                needsUpdate = true;
+            }break;
 
+            case 'f':
+            {
+                shoot();
+                needsUpdate = true;
+            }break;
+
+            case 'e':
+            {
+                if(currentX == 0 && currentY == 0)
+                {
+                    // TODO(Andrew): Exit Maze
+                }
+                needsUpdate = true;
+            }break;
+
+            default:
+            {
+                Game.addToLog("Bad input, which should never happen\n");
+            }break;
+        }
+    }
 
 }
