@@ -15,8 +15,8 @@ import javafx.stage.Stage;
  */
 public class Game implements Runnable, Updateable
 {
-    public static final int WIDTH = 900;
-    public static final int HEIGHT = 800;
+    public static final int WIDTH = 1400;
+    public static final int HEIGHT = 900;
     public final int NUM_ROWS = 4;
     public final int NUM_COLS = 4;
     public final int TOTAL_CELLS = NUM_ROWS * NUM_COLS;

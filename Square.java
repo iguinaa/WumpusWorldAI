@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -31,6 +32,18 @@ public class Square extends HBox implements Updateable
     public int prefSide;
     public int x;
     public int y;
+
+    public boolean isStart()
+    {
+        return isStart;
+    }
+
+    public void setAsStart()
+    {
+        isStart = true;
+        updateLayout();
+    }
+
     public boolean isStart = false;// This must be settable by player or map
     public boolean isPlayerMap = false;
     // NOTE(Andrew): perceptions should be a subset of attributes.
@@ -40,10 +53,7 @@ public class Square extends HBox implements Updateable
     ImageView[] imgViews;
     Image testBG;
     ImageView testBGView;
-    char mapChar;
-    // TODO(andrew): edit these if time allows
-    // some of these can stack and some cant. ex: wumpus && pit == FALSE
-    // objects in world
+    char mapChar;   // NOTE(Andrew): deprecated but supported
     private boolean hasWumpus = false;
     private boolean hasGold = false;    //Note: This also provides a perception "glitter"
     private boolean hasPit = false;
@@ -54,6 +64,7 @@ public class Square extends HBox implements Updateable
     //player knowledge
     private boolean wasVisited; // NOTE: should these be stored here? could store in player, but then couldnt update images easily
     private int wumpusDangerScore = 0, pitDangerScore = 0, totalDangerScore = 0;
+
     public Square(boolean isPlayerMap, int x, int y)
     {
         super(10); // NOTE: 10 pixels border?
@@ -107,9 +118,23 @@ public class Square extends HBox implements Updateable
 
     public void setLayout()
     {
-        // TODO: Stub
-
+        Game.dbgPane(imgContainer, Color.DARKSLATEGRAY); // TODO: Remove
+        if(x == 0 && y == 1)
+        {
+            Game.dbgPane(imgContainer, Color.GREEN); // TODO: Remove
+        }
+        else if(x == 1 && y == 0)
+            Game.dbgPane(imgContainer, Color.RED); // TODO: Remove
     }
+
+    public void updateLayout()
+    {
+        if(isStart)
+        {
+            Game.dbgPane(imgContainer, Color.WHEAT);
+        }
+    }
+
 
 //    public Square(char mapChar)
 //    {

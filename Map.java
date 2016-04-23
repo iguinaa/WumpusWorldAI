@@ -34,16 +34,25 @@ public class Map extends GridPane implements Updateable
         else{
             isPlayerMap = true;
 
-            //i == y; j == x
+            //i == intended x; j == intended y
             for(int i = 0; i < height; i++) {
 
-                for (int j = 0; j < width; j++) {
+                for (int j = 0; j < height; j++) {
 
-                    wumpusMap[j][i] = new Square(isPlayerMap, j, i);
-                    this.add(wumpusMap[j][i], j, i);
+                    wumpusMap[i][j] = new Square(isPlayerMap, i, j);
+                    this.add(wumpusMap[i][j], toRealX(i), toRealY(j));
 
                 }
             }
+//            for(int i = 0; i < height; i++) {
+//
+//                for (int j = 0; j < height; j++) {
+//
+//                    wumpusMap[toRealX(i)][toRealY(j)] = new Square(isPlayerMap, i, j);
+//                    this.add(wumpusMap[toRealX(i)][toRealY(j)], toRealX(i), toRealY(j));
+//
+//                }
+//            }
         }
 
     }
@@ -58,16 +67,25 @@ public class Map extends GridPane implements Updateable
         if (blankMap) {
             seedMap();
         } else {
-            //i == y; j == x
-            for (int i = 0; i < height; i++) {
+            //i == x; j == y
+            for(int i = 0; i < height; i++) {
 
-                for (int j = 0; j < width; j++) {
+                for (int j = 0; j < height; j++) {
 
-                    wumpusMap[j][i] = new Square(isPlayerMap, j, i);
-                    this.add(wumpusMap[j][i], j, i);
+                    wumpusMap[i][j] = new Square(isPlayerMap, i, j);
+                    this.add(wumpusMap[i][j], toRealX(i), toRealY(j));
 
                 }
             }
+//            for(int i = 0; i < height; i++) {
+//
+//                for (int j = 0; j < height; j++) {
+//
+//                    wumpusMap[toRealX(i)][toRealY(j)] = new Square(isPlayerMap, i, j);
+//                    this.add(wumpusMap[toRealX(i)][toRealY(j)], toRealX(i), toRealY(j));
+//
+//                }
+//            }
         }
     }
 
@@ -78,19 +96,29 @@ public class Map extends GridPane implements Updateable
         int x, y;
 
         //Fill the array with Square objects
-        //i == y; j == x
-        for(int i = 0; i < height; i++) {
+        //i == x; j == y
+        for(int i = 0; i < width; i++) {
 
-            for (int j = 0; j < width; j++) {
+            for (int j = 0; j < height; j++) {
 
-                wumpusMap[j][i] = new Square(isPlayerMap, j, i);
-                this.add(wumpusMap[j][i], j, i);
+                wumpusMap[i][j] = new Square(isPlayerMap, i, j);
+                this.add(wumpusMap[i][j], toRealX(i), toRealY(j));
 
             }
         }
+//        for(int i = 0; i < width; i++) {
+//
+//            for (int j = 0; j < height; j++) {
+//
+//                wumpusMap[toRealX(i)][toRealY(j)] = new Square(isPlayerMap, i, j);
+//                this.add(wumpusMap[toRealX(i)][toRealY(j)], toRealX(i), toRealY(j));
+//
+//            }
+//        }
 
         //Set starting point (this is location 1, 1 on the map)
-        wumpusMap[0][0].isStart = true;
+//        wumpusMap[0][0].isStart = true;
+        wumpusMap[0][0].setAsStart();
 
         //Assign pits
         for(int i = 0; i < pitCount; i++)   {
@@ -99,6 +127,7 @@ public class Map extends GridPane implements Updateable
             do {
                 x = random.nextInt(width);
                 y = random.nextInt(height);
+                System.out.println("Testing Rand Efficiency Pit"); // TODO: Remove
             } while (x == 0 && y == 0);
 
             System.out.println("x " + x + " y " + y);
@@ -136,11 +165,17 @@ public class Map extends GridPane implements Updateable
         }
 
         //Assign wumpus location
-        x = random.nextInt(width);
-        y = random.nextInt(height);
+        do
+        {
+            x = random.nextInt(width);
+            y = random.nextInt(height);
+            System.out.println("Testing Rand Efficiency Wumpus"); // TODO: Remove
+        } while( x==0 && y==0);
+
 //        wumpusMap[x][y].hasWumpus = true;
         wumpusMap[x][y].mapChar = 'W';
         wumpusMap[x][y].setMapChar('W');
+        wumpusMap[x][y].addMapChar('S');
 
         //assign stench
 
@@ -181,9 +216,10 @@ public class Map extends GridPane implements Updateable
 
         for (int i = 0; i < height; i++) {
 
-            for (int j = 0; j < width; j++) {
+            for (int j = 0; j < height; j++)
+            {
 
-                System.out.print(wumpusMap[j][i].mapChar + " ");
+                System.out.print(wumpusMap[i][j].mapChar + " ");
 
             }
 
@@ -191,6 +227,18 @@ public class Map extends GridPane implements Updateable
 
         }
 
+//        for (int i = 0; i < height; i++) {
+//
+//            for (int j = 0; j < height; j++)
+//            {
+//
+//                System.out.print(wumpusMap[toRealX(i)][toRealY(j)].mapChar + " ");
+//
+//            }
+//
+//            System.out.println();
+//
+//        }
     }
 
     public void setSquareSize(double givenPrefHeight)
@@ -198,28 +246,73 @@ public class Map extends GridPane implements Updateable
         this.setPrefSize(givenPrefHeight, givenPrefHeight);
         double cellSize = Math.round(givenPrefHeight / wumpusMap.length);
 
-        //i == y; j == x
-        for(int i = 0; i < height; i++) {
+        //i == x; j == y
+        for(int i = 0; i < width; i++) {
 
-            for (int j = 0; j < width; j++) {
+            for (int j = 0; j < height; j++) {
 
-                wumpusMap[j][i].setPrefSide((int)cellSize);
+                wumpusMap[i][j].setPrefSide((int)cellSize);
 
             }
         }
+//        for(int i = 0; i < width; i++) {
+//
+//            for (int j = 0; j < height; j++) {
+//
+//                wumpusMap[toRealX(i)][toRealY(j)].setPrefSide((int)cellSize);
+//
+//            }
+//        }
     }
 
     @Override
     public void update()
     {
-        //i == y; j == x
-        for(int i = 0; i < height; i++) {
+        //i == x; j == y
+        for(int i = 0; i < width; i++) {
 
-            for (int j = 0; j < width; j++) {
+            for (int j = 0; j < height; j++) {
 
-                wumpusMap[j][i].update();
+                wumpusMap[i][j].update();
 
             }
         }
+//        for(int i = 0; i < width; i++) {
+//
+//            for (int j = 0; j < height; j++) {
+//
+//                wumpusMap[toRealX(i)][toRealY(j)].update();
+//
+//            }
+//        }
+    }
+
+
+    // REAL MAP LAYOUT
+    // START POS: 0,MAX(j)
+    // 0,0  1,0  2,0
+    // 0,1  1,1  2,1
+    // 0,2  1,2  2,2
+    
+    // INTENDED MAP LAYOUT
+    // 0,2  1,2  2,2
+    // 0,1  1,1  2,1
+    // 0,0  1,0  2,0
+    public int toRealX(int intended_x)
+    {
+        return intended_x;
+    }
+    public int toRealY(int intended_y)
+    {
+        return (height-1-intended_y);
+    }
+    public int toIntendedX(int real_x)
+    {
+        return real_x;
+    }
+    public int toIntendedY(int real_y)
+    {
+        return (Math.abs(real_y-height-1));
     }
 }
+
