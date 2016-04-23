@@ -14,48 +14,10 @@ import java.util.BitSet;
 public class Square extends HBox implements Updateable
 {
     public static final int DEFAULT_SIDE = 100; // Default side length
-
-    public int prefSide;
-    public int x;
-    public int y;
-
-
-    // TODO(andrew): edit these if time allows
-    // some of these can stack and some cant. ex: wumpus && pit == FALSE
-    // objects in world
-    private boolean hasWumpus = false;
-    private boolean hasGold = false;    //Note: This also provides a perception "glitter"
-    private boolean hasPit = false;
-    private boolean hasPlayer = false;
-
-    // Map-able Perceptions
-    private boolean hasStench = false;
-    private boolean hasBreeze = false;
-
-    //player knowledge
-    private boolean wasVisited; // NOTE: should these be stored here? could store in player, but then couldnt update images easily
-    public boolean isStart = false;// This must be settable by player or map
-    public boolean isPlayerMap = false;
-    private int wumpusDangerScore = 0, pitDangerScore = 0, totalDangerScore = 0;
-
-    // NOTE(Andrew): perceptions should be a subset of attributes.
-    public ArrayList<Character> attributes;
-    public ArrayList<Character> perceptions;
-
-    public ArrayList<Character> getAttributes()
-    {
-        return attributes;
-    }
-
-    public ArrayList<Character> getPerceptions()
-    {
-        return perceptions;
-    }
-
-
     // Characters
     // W, S, P, B, G, A, V
-    public static final int NUM_IMAGES = 7;
+    public static final int NUM_IMAGES = 8;
+    public static Image[] images = new Image[NUM_IMAGES];
     static String[] imagePaths = {
             "ganon.png", // W 0
             "stench.png", // S 1
@@ -63,18 +25,35 @@ public class Square extends HBox implements Updateable
             "breeze.png", // B 3
             "gold.png", // G 4
             "linkbow.png",  // A 5
-            "mystery2.png"  // !(V) 6   could use bush.png
+            "mystery2.png",  // !(V) 6   could use bush.png
+            "tile.png" //for empty squares on main map  //TODO Andrew: how do I use this?
     };
-
-    public static Image[] images = new Image[NUM_IMAGES];
+    public int prefSide;
+    public int x;
+    public int y;
+    public boolean isStart = false;// This must be settable by player or map
+    public boolean isPlayerMap = false;
+    // NOTE(Andrew): perceptions should be a subset of attributes.
+    public ArrayList<Character> attributes;
+    public ArrayList<Character> perceptions;
     StackPane imgContainer;
     ImageView[] imgViews;
-
     Image testBG;
     ImageView testBGView;
-
     char mapChar;
-
+    // TODO(andrew): edit these if time allows
+    // some of these can stack and some cant. ex: wumpus && pit == FALSE
+    // objects in world
+    private boolean hasWumpus = false;
+    private boolean hasGold = false;    //Note: This also provides a perception "glitter"
+    private boolean hasPit = false;
+    private boolean hasPlayer = false;
+    // Map-able Perceptions
+    private boolean hasStench = false;
+    private boolean hasBreeze = false;
+    //player knowledge
+    private boolean wasVisited; // NOTE: should these be stored here? could store in player, but then couldnt update images easily
+    private int wumpusDangerScore = 0, pitDangerScore = 0, totalDangerScore = 0;
     public Square(boolean isPlayerMap, int x, int y)
     {
         super(10); // NOTE: 10 pixels border?
@@ -116,6 +95,14 @@ public class Square extends HBox implements Updateable
         setLayout();
         setMapChar('V');
         setBG();
+    }
+
+    public ArrayList<Character> getAttributes() {
+        return attributes;
+    }
+
+    public ArrayList<Character> getPerceptions() {
+        return perceptions;
     }
 
     public void setLayout()
