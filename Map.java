@@ -33,12 +33,14 @@ public class Map extends GridPane implements Updateable
         }
         else{
             isPlayerMap = true;
+
+            //i == y; j == x
             for(int i = 0; i < height; i++) {
 
                 for (int j = 0; j < width; j++) {
 
-                    wumpusMap[i][j] = new Square(isPlayerMap, i, j);
-                    this.add(wumpusMap[i][j], i, j);
+                    wumpusMap[j][i] = new Square(isPlayerMap, j, i);
+                    this.add(wumpusMap[j][i], j, i);
 
                 }
             }
@@ -56,12 +58,13 @@ public class Map extends GridPane implements Updateable
         if (blankMap) {
             seedMap();
         } else {
+            //i == y; j == x
             for (int i = 0; i < height; i++) {
 
                 for (int j = 0; j < width; j++) {
 
-                    wumpusMap[i][j] = new Square(isPlayerMap, i, j);
-                    this.add(wumpusMap[i][j], i, j);
+                    wumpusMap[j][i] = new Square(isPlayerMap, j, i);
+                    this.add(wumpusMap[j][i], j, i);
 
                 }
             }
@@ -75,12 +78,13 @@ public class Map extends GridPane implements Updateable
         int x, y;
 
         //Fill the array with Square objects
+        //i == y; j == x
         for(int i = 0; i < height; i++) {
 
             for (int j = 0; j < width; j++) {
 
-                wumpusMap[i][j] = new Square(isPlayerMap, i, j);
-                this.add(wumpusMap[i][j], i, j);
+                wumpusMap[j][i] = new Square(isPlayerMap, j, i);
+                this.add(wumpusMap[j][i], j, i);
 
             }
         }
@@ -193,11 +197,13 @@ public class Map extends GridPane implements Updateable
     {
         this.setPrefSize(givenPrefHeight, givenPrefHeight);
         double cellSize = Math.round(givenPrefHeight / wumpusMap.length);
+
+        //i == y; j == x
         for(int i = 0; i < height; i++) {
 
             for (int j = 0; j < width; j++) {
 
-                wumpusMap[i][j].setPrefSide((int)cellSize);
+                wumpusMap[j][i].setPrefSide((int)cellSize);
 
             }
         }
@@ -206,11 +212,12 @@ public class Map extends GridPane implements Updateable
     @Override
     public void update()
     {
+        //i == y; j == x
         for(int i = 0; i < height; i++) {
 
             for (int j = 0; j < width; j++) {
 
-                wumpusMap[i][j].update();
+                wumpusMap[j][i].update();
 
             }
         }
