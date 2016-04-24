@@ -71,7 +71,7 @@ public class Square extends HBox implements Updateable
     private boolean hasStench = false;
     private boolean hasBreeze = false;
     //player knowledge
-    private boolean wasVisited = false; // NOTE: should these be stored here? could store in player, but then couldnt update images easily
+    private boolean wasVisited; // NOTE: should these be stored here? could store in player, but then couldnt update images easily
     private int wumpusDangerScore = 0, pitDangerScore = 0, totalDangerScore = 0;
 
     public Square(boolean isPlayerMap, int x, int y)
@@ -79,7 +79,7 @@ public class Square extends HBox implements Updateable
         super(10); // NOTE: 10 pixels border?
 
         this.mapChar = 'X';
-
+        this.wasVisited = false;
         this.x = x;
         this.y = y;
         attributes = new ArrayList<Character>();
@@ -121,6 +121,10 @@ public class Square extends HBox implements Updateable
         //Set visited for main map so tiles show up
         if(!isPlayerMap)
             setMapChar('V');
+        if(isStart)
+        {
+            this.wasVisited = true;
+        }
 
         updateAttributes();
         updatePerceptions();
@@ -371,7 +375,14 @@ public class Square extends HBox implements Updateable
 
     private void updatePerceptions()
     {
-        // S, B, G
+        // S, B, G, A
+        int[] flagForRemoval = new int[15];
+        for(int j = 0; j < flagForRemoval.length; j++)
+        {
+            flagForRemoval[j] = -1;
+        }
+        int arrCounter = 0;
+
         if (this.hasStench)
         {
             if (!perceptions.contains(Character.valueOf('S')))
@@ -394,6 +405,40 @@ public class Square extends HBox implements Updateable
                 perceptions.add(new Character('G'));
             }
         }
+
+
+        if (this.hasPlayer)
+        {
+            if (!perceptions.contains(Character.valueOf('A')))
+            {
+                perceptions.add(new Character('A'));
+            }
+        }
+        else if(!this.hasPlayer)
+        {
+            if (perceptions.contains(Character.valueOf('A')))
+            {
+                for(int i=0; i < perceptions.size(); i++)
+                {
+                    if(perceptions.get(i).charValue() == 'A')
+                    {
+                        flagForRemoval[arrCounter] = i;
+                        arrCounter++;
+                    }
+
+                }
+            }
+        }
+        for(int j = 0; j <= arrCounter; j++)
+        {
+            if( flagForRemoval[j] != -1)
+                attributes.remove(j);
+        }
+        for(int j = 0; j < flagForRemoval.length; j++)
+        {
+            flagForRemoval[j] = -1;
+        }
+        arrCounter = 0;
 
         percNeedsUpdate = false;
     }
@@ -482,11 +527,11 @@ public class Square extends HBox implements Updateable
                 this.hasPlayer = false;
             }
             break;
-            case 'V':
-            {
-                this.wasVisited = false;
-            }
-            break;
+//            case 'V':
+//            {
+//                this.wasVisited = false;
+//            }
+//            break;
             default:
             {
                 System.out.println("Invalid Character");
@@ -499,11 +544,6 @@ public class Square extends HBox implements Updateable
 
     void setBG()
     {
-//        String bgPath = "";
-//        if (mapChar == 'X')
-//            bgPath = "blank.jpg";
-//        else
-//            bgPath = "notblank.jpg";
         //FIXME(Andrew): Wumpus appears on blank squares.
         for(ImageView img : imgViews)
         {
@@ -523,10 +563,6 @@ public class Square extends HBox implements Updateable
                 imgContainer.getChildren().add(imgViews[i]);
             }
         }
-//        testBG = new Image(bgPath);
-//        testBGView.setImage(testBG);
-//        testBGView.setFitWidth(Square.DEFAULT_SIDE);
-//        testBGView.setPreserveRatio(true);
     }
 
 
@@ -593,6 +629,29 @@ public class Square extends HBox implements Updateable
         this.imgContainer.setPrefSize((double)prefSide, (double)prefSide);
     }
 
+    public void initialUpdate()
+    {
+        if(this.x == 0 && this.y == 0)
+        {
+            setMapChar('V');
+            this.wasVisited = true;
+        }
+        updateAttributes();
+
+        if(isPlayerMap && this.x == 0 && this.y == 0)
+        {
+            String out = "";
+            for (Character c : attributes)
+            {
+                out = out + c.toString() + ", ";
+            }
+            out = out + "\n";
+            Game.addToLog(out);
+            System.out.println("Initial State of Player map squares" + out);
+        }
+        updatePerceptions();
+        setBG();
+    }
 
     @Override
     public void update()
