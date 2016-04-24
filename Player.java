@@ -65,7 +65,7 @@ public class Player implements Updateable
         if(isHuman)
         {
            // do stuff
-            gameMap.update();
+            gameMap.update(); //FIXME(Andrew) i think this works on a different copy of the map due to copy by value
             needsUpdate = false;
 
             return;

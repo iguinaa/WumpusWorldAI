@@ -51,6 +51,8 @@ public class Square extends HBox implements Updateable
         updateLayout();
     }
 
+    public boolean attrsNeedUpdate;
+    public boolean percNeedsUpdate;
     public boolean isStart = false;// This must be settable by player or map
     public boolean isPlayerMap = false;
     // NOTE(Andrew): perceptions should be a subset of attributes.
@@ -82,6 +84,8 @@ public class Square extends HBox implements Updateable
         this.y = y;
         attributes = new ArrayList<Character>();
         perceptions = new ArrayList<Character>();
+        attrsNeedUpdate = false;
+        percNeedsUpdate = false;
         this.isPlayerMap = isPlayerMap;
         try
         {
@@ -118,6 +122,8 @@ public class Square extends HBox implements Updateable
         if(!isPlayerMap)
             setMapChar('V');
 
+        updateAttributes();
+        updatePerceptions();
         setBG();
         dbgHoverTest();
     }
@@ -205,14 +211,23 @@ public class Square extends HBox implements Updateable
                 System.out.println("Invalid Character");
             }
         }
-        updateAttributes();
-        updatePerceptions();
-        setBG();
+        attrsNeedUpdate = true;
+        percNeedsUpdate = true;
+//        updateAttributes();
+//        updatePerceptions();
+//        setBG();
     }
 
     private void updateAttributes()
     {
         // W, S, P, B, G, A, V
+        int[] flagForRemoval = new int[15];
+        for(int j = 0; j < flagForRemoval.length; j++)
+        {
+            flagForRemoval[j] = -1;
+        }
+        int arrCounter = 0;
+
         if (this.hasWumpus)
         {
             if (!attributes.contains(Character.valueOf('W')))
@@ -220,6 +235,34 @@ public class Square extends HBox implements Updateable
                 attributes.add(new Character('W'));
             }
         }
+        else if(!this.hasWumpus)
+        {
+            if (attributes.contains(Character.valueOf('W')))
+            {
+                for(int i=0; i < attributes.size(); i++)
+                {
+                    if(attributes.get(i).charValue() == 'W')
+                    {
+                        flagForRemoval[arrCounter] = i;
+                        arrCounter++;
+                    }
+
+                }
+            }
+        }
+        for(int j = 0; j <= arrCounter; j++)
+        {
+            if( flagForRemoval[j] != -1)
+                attributes.remove(j);
+        }
+        for(int j = 0; j < flagForRemoval.length; j++)
+        {
+            flagForRemoval[j] = -1;
+        }
+        arrCounter = 0;
+
+
+
         if (this.hasStench)
         {
             if (!attributes.contains(Character.valueOf('S')))
@@ -227,6 +270,7 @@ public class Square extends HBox implements Updateable
                 attributes.add(new Character('S'));
             }
         }
+
         if (this.hasPit)
         {
             if (!attributes.contains(Character.valueOf('P')))
@@ -234,6 +278,7 @@ public class Square extends HBox implements Updateable
                 attributes.add(new Character('P'));
             }
         }
+
         if (this.hasBreeze)
         {
             if (!attributes.contains(Character.valueOf('B')))
@@ -241,6 +286,7 @@ public class Square extends HBox implements Updateable
                 attributes.add(new Character('B'));
             }
         }
+
         if (this.hasGold)
         {
             if (!attributes.contains(Character.valueOf('G')))
@@ -248,6 +294,35 @@ public class Square extends HBox implements Updateable
                 attributes.add(new Character('G'));
             }
         }
+        else if(!this.hasGold)
+        {
+            if (attributes.contains(Character.valueOf('G')))
+            {
+                for(int i=0; i < attributes.size(); i++)
+                {
+                    if(attributes.get(i).charValue() == 'G')
+                    {
+                        flagForRemoval[arrCounter] = i;
+                        arrCounter++;
+                    }
+
+                }
+            }
+        }
+        for(int j = 0; j <= arrCounter; j++)
+        {
+            if( flagForRemoval[j] != -1)
+                attributes.remove(j);
+        }
+        for(int j = 0; j < flagForRemoval.length; j++)
+        {
+            flagForRemoval[j] = -1;
+        }
+        arrCounter = 0;
+
+
+
+
         if (this.hasPlayer)
         {
             if (!attributes.contains(Character.valueOf('A')))
@@ -255,6 +330,33 @@ public class Square extends HBox implements Updateable
                 attributes.add(new Character('A'));
             }
         }
+        else if(!this.hasPlayer)
+        {
+            if (attributes.contains(Character.valueOf('A')))
+            {
+                for(int i=0; i < attributes.size(); i++)
+                {
+                    if(attributes.get(i).charValue() == 'A')
+                    {
+                        flagForRemoval[arrCounter] = i;
+                        arrCounter++;
+                    }
+
+                }
+            }
+        }
+        for(int j = 0; j <= arrCounter; j++)
+        {
+            if( flagForRemoval[j] != -1)
+                attributes.remove(j);
+        }
+        for(int j = 0; j < flagForRemoval.length; j++)
+        {
+            flagForRemoval[j] = -1;
+        }
+        arrCounter = 0;
+
+
         if (this.wasVisited)
         {
             if (!attributes.contains(Character.valueOf('V')))
@@ -262,6 +364,9 @@ public class Square extends HBox implements Updateable
                 attributes.add(new Character('V'));
             }
         }
+
+        attrsNeedUpdate = false;
+
     }
 
     private void updatePerceptions()
@@ -289,61 +394,62 @@ public class Square extends HBox implements Updateable
                 perceptions.add(new Character('G'));
             }
         }
+
+        percNeedsUpdate = false;
     }
 
-    public void addMapChar(char mapChar)
-    {
-        this.mapChar = mapChar;
-        switch (mapChar)
-        {
-            case 'W':
-            {
-                this.hasWumpus = true;
-            }
-            break;
-            case 'S':
-            {
-                this.hasStench = true;
-            }
-            break;
-            case 'P':
-            {
-                this.hasPit = true;
-            }
-            break;
-            case 'B':
-            {
-                this.hasBreeze = true;
-            }
-            break;
-            case 'G':
-            {
-                this.hasGold = true;
-            }
-            break;
-            case 'A':
-            {
-                this.hasPlayer = true;
-            }
-            break;
-            case 'V':
-            {
-                this.wasVisited = true;
-            }
-            break;
-            default:
-            {
-                System.out.println("Invalid Character");
-            }
-        }
-        updateAttributes();
-        updatePerceptions();
-        setBG();
-    }
+//    public void addMapChar(char mapChar)
+//    {
+//        this.mapChar = mapChar;
+//        switch (mapChar)
+//        {
+//            case 'W':
+//            {
+//                this.hasWumpus = true;
+//            }
+//            break;
+//            case 'S':
+//            {
+//                this.hasStench = true;
+//            }
+//            break;
+//            case 'P':
+//            {
+//                this.hasPit = true;
+//            }
+//            break;
+//            case 'B':
+//            {
+//                this.hasBreeze = true;
+//            }
+//            break;
+//            case 'G':
+//            {
+//                this.hasGold = true;
+//            }
+//            break;
+//            case 'A':
+//            {
+//                this.hasPlayer = true;
+//            }
+//            break;
+//            case 'V':
+//            {
+//                this.wasVisited = true;
+//            }
+//            break;
+//            default:
+//            {
+//                System.out.println("Invalid Character");
+//            }
+//        }
+//        updateAttributes();
+//        updatePerceptions();
+//        setBG();
+//    }
 
     public void removeMapChar(char mapChar)
     {
-        this.mapChar = mapChar;
         switch (mapChar)
         {
             case 'W':
@@ -386,9 +492,9 @@ public class Square extends HBox implements Updateable
                 System.out.println("Invalid Character");
             }
         }
-        updateAttributes();
-        updatePerceptions();
-        setBG();
+        attrsNeedUpdate = true;
+        percNeedsUpdate = true;
+//        setBG();
     }
 
     void setBG()
@@ -403,13 +509,20 @@ public class Square extends HBox implements Updateable
         {
             imgContainer.getChildren().remove(img);
         }
-        for (int j = 0; j < attributes.size(); j++)
-        {
-            int i = enumChars(attributes.get(j));
-            imgViews[i].setFitWidth(Square.DEFAULT_SIDE);
-            imgContainer.getChildren().add(imgViews[i]);
-        }
 
+        if(!attributes.contains(Character.valueOf('V')))
+        {
+            imgContainer.getChildren().add(imgViews[NUM_IMAGES - 1]);
+        }
+        else
+        {
+            for (int j = 0; j < attributes.size(); j++)
+            {
+                int i = enumChars(attributes.get(j));
+                imgViews[i].setFitWidth(Square.DEFAULT_SIDE);
+                imgContainer.getChildren().add(imgViews[i]);
+            }
+        }
 //        testBG = new Image(bgPath);
 //        testBGView.setImage(testBG);
 //        testBGView.setFitWidth(Square.DEFAULT_SIDE);
@@ -485,7 +598,9 @@ public class Square extends HBox implements Updateable
     public void update()
     {
         //TODO(Andrew): Update images based on 'knowledge' not fact
-
+        updateAttributes();
+        updatePerceptions();
+        setBG();
 
     }
 

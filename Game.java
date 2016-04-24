@@ -243,12 +243,13 @@ public class Game implements Runnable, Updateable
                 player.handleHumanCommand('e');
 //                valid = true;
             }
+            if (player.needsUpdate)
+            {
+                addToLog("Want to update player\n");
+                updateHumanPlayer();
+            }
         });
-        if (player.needsUpdate)
-        {
-            addToLog("Want to update player\n");
-            updateHumanPlayer();
-        }
+
 
     }
 
