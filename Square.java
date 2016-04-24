@@ -76,6 +76,8 @@ public class Square extends HBox implements Updateable
     {
         super(10); // NOTE: 10 pixels border?
 
+        this.mapChar = 'X';
+
         this.x = x;
         this.y = y;
         attributes = new ArrayList<Character>();
