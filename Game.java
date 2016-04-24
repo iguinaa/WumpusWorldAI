@@ -8,6 +8,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -32,6 +34,7 @@ public class Game implements Runnable, Updateable
     Scene scene;// This scene/canvas handle
     boolean isRunning = true;
     Player player;
+
 
 
 
@@ -115,10 +118,6 @@ public class Game implements Runnable, Updateable
     }
 
 
-
-
-
-
     Button btnUpdate = new Button("Update");
 
 
@@ -149,16 +148,12 @@ public class Game implements Runnable, Updateable
         try
         {
             error = this.initialize();
-//            error = this.loadContent();
         }
         catch(Exception ex)
         {
             System.out.println("Hit error. error code: " + error + " " + ex);
         }
         System.out.println("Should be running");
-
-
-
 
     }
 
@@ -177,6 +172,8 @@ public class Game implements Runnable, Updateable
         player.setMap(((WumpusWorldPane)gamePane).getPlayerMap());
 
         scene = new Scene(gamePane, WIDTH, HEIGHT );
+        log.setEditable(false);
+        setPlayerKeyboardEvents();
 
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -204,12 +201,69 @@ public class Game implements Runnable, Updateable
 
     public void setPlayerKeyboardEvents()
     {
-        //TODO: Stub
+//        boolean valid = false;
+        gamePane.setOnKeyReleased( e ->
+        {
+            addToLog("found a key\n");
+            KeyCode code = e.getCode();
+            if(code == KeyCode.W || code == KeyCode.UP)
+            {
+                // go up
+                player.handleHumanCommand('u');
+//                valid = true;
+                addToLog("This ones up\n");
+            }
+            else if(code == KeyCode.S || code == KeyCode.DOWN)
+            {
+                // go down
+                player.handleHumanCommand('d');
+//                valid = true;
+            }
+            else if(code == KeyCode.A || code == KeyCode.LEFT)
+            {
+                // go left
+                player.handleHumanCommand('l');
+//                valid = true;
+            }
+            else if(code == KeyCode.D || code == KeyCode.RIGHT)
+            {
+                // go right
+                player.handleHumanCommand('r');
+//                valid = true;
+            }
+            else if(code == KeyCode.SPACE)
+            {
+                // Fire iff has arrow
+                player.handleHumanCommand('f');
+//                valid = true;
+            }
+            else if(code == KeyCode.ESCAPE)
+            {
+                // Leave iff at 0,0
+                player.handleHumanCommand('e');
+//                valid = true;
+            }
+        });
+        if (player.needsUpdate)
+        {
+            addToLog("Want to update player\n");
+            updateHumanPlayer();
+        }
+
     }
 
     public void updateHumanPlayer()
     {
-        // TODO(Andrew): Needs switch statement
+        player.update();
+        ((WumpusWorldPane)gamePane).passPlayer(player);
+        ((WumpusWorldPane)gamePane).update();
+        if(player.querySquare)
+        {
+            System.out.println("query square");
+            player.currentSquare = ((WumpusWorldPane) gamePane).getWorldMap().wumpusMap[player.currentX][player.currentY];
+            player.querySquare = false;
+        }
+
     }
 
     @Override

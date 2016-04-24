@@ -1,8 +1,11 @@
 //package sample;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -42,6 +45,9 @@ public class Square extends HBox implements Updateable
     public void setAsStart()
     {
         isStart = true;
+
+        //Set visisted if this is the start square since it will always be true
+        setMapChar('V');
         updateLayout();
     }
 
@@ -63,13 +69,13 @@ public class Square extends HBox implements Updateable
     private boolean hasStench = false;
     private boolean hasBreeze = false;
     //player knowledge
-    private boolean wasVisited; // NOTE: should these be stored here? could store in player, but then couldnt update images easily
+    private boolean wasVisited = false; // NOTE: should these be stored here? could store in player, but then couldnt update images easily
     private int wumpusDangerScore = 0, pitDangerScore = 0, totalDangerScore = 0;
 
     public Square(boolean isPlayerMap, int x, int y)
     {
         super(10); // NOTE: 10 pixels border?
-        this.mapChar = 'V';
+
         this.x = x;
         this.y = y;
         attributes = new ArrayList<Character>();
@@ -105,8 +111,13 @@ public class Square extends HBox implements Updateable
 //        this.getChildren().add(testBGVew);
         this.getChildren().add(imgContainer);
         setLayout();
-        setMapChar('V');
+
+        //Set visited for main map so tiles show up
+        if(!isPlayerMap)
+            setMapChar('V');
+
         setBG();
+        dbgHoverTest();
     }
 
     public ArrayList<Character> getAttributes() {
@@ -516,4 +527,41 @@ public class Square extends HBox implements Updateable
     public int getTotalDangerScore() {
         return totalDangerScore;
     }
+
+    public void dbgHoverTest()
+    {
+        this.setOnMouseEntered(new EventHandler<MouseEvent>
+                () {
+
+            @Override
+            public void handle(MouseEvent t) {
+                show(true);
+            }
+        });
+
+        this.setOnMouseExited(new EventHandler<MouseEvent>
+                () {
+
+            @Override
+            public void handle(MouseEvent t) {
+                show(false);
+            }
+        });
+    }
+
+    public void show(boolean show)  // TODO(Andrew): Comment out for release
+    {
+        if(show)
+        {
+            String out = "";
+            for (Character c : attributes)
+            {
+                out = out + c.toString() + ", ";
+            }
+            out = out + "\n";
+            Game.addToLog(out);
+        }
+    }
+
+
 }
