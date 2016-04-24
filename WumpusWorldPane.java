@@ -120,22 +120,40 @@ public class WumpusWorldPane extends GamePane implements Updateable
 
     public void passPlayer(Player p)
     {
-        Square[][] map = getWorldMap().wumpusMap;
-        for(int i = 0 ; i < map.length; i++)
+        Game.updateDebugString(Game.getDebugData().toString() + "In passPlayer + Player is at  " + p.currentX + ", " + p.currentY + "\n");
+        for(int i = 0 ; i < getWorldMap().wumpusMap.length; i++)
         {
-            for(int j=0; j < map[i].length; j++)
+            for(int j=0; j < getWorldMap().wumpusMap[i].length; j++)
             {
                 if(i == p.currentX && j == p.currentY)
                 {
-                    map[i][j].setMapChar('P');
+                    getWorldMap().wumpusMap[i][j].setMapChar('A');
+                    Game.addToLog("Player Loc = " + i + ", " + j + "\n");
                 }
                 else
                 {
-                    map[i][j].removeMapChar('P');
+                    getWorldMap().wumpusMap[i][j].removeMapChar('A');
+//                    Game.addToLog("Not Player\n");
                 }
             }
 
         }
+
+//        for(int i = 0 ; i < getPlayerMap().wumpusMap.length; i++)
+//        {
+//            for(int j=0; j < getPlayerMap().wumpusMap[i].length; j++)
+//            {
+//                if(i == p.currentX && j == p.currentY)
+//                {
+//                    getPlayerMap().wumpusMap[i][j].setMapChar('A');
+//                }
+//                else
+//                {
+//                    getPlayerMap().wumpusMap[i][j].removeMapChar('A');
+//                }
+//            }
+//
+//        }
 
     }
 

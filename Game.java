@@ -43,6 +43,36 @@ public class Game implements Runnable, Updateable
             "Current Knowledge:   \n"
     );
 
+    public static String getKB()
+    {
+        return KB.get();
+    }
+
+    public static StringProperty KBProperty()
+    {
+        return KB;
+    }
+
+    public static String getProperties()
+    {
+        return properties.get();
+    }
+
+    public static StringProperty propertiesProperty()
+    {
+        return properties;
+    }
+
+    public static String getDebugData()
+    {
+        return debugData.get();
+    }
+
+    public static StringProperty debugDataProperty()
+    {
+        return debugData;
+    }
+
     public static StringProperty properties = new SimpleStringProperty(
             "Current Stats:   \n"
     );
@@ -51,6 +81,8 @@ public class Game implements Runnable, Updateable
             "Debug Information:   \n"
     );
     public static TextArea log = new TextArea();
+
+
 
 
     public static void updatePropertiesString(ArrayList<String> properties)
@@ -109,6 +141,12 @@ public class Game implements Runnable, Updateable
     {
         Game.debugData.setValue(
                 "Debug Information:   \n" + text
+        );
+    }
+    public static void appendDebugString(String text)
+    {
+        Game.debugData.setValue(
+                Game.debugData.getValueSafe() + text
         );
     }
 
@@ -173,6 +211,8 @@ public class Game implements Runnable, Updateable
 
         scene = new Scene(gamePane, WIDTH, HEIGHT );
         log.setEditable(false);
+        updateDebugString("REAL PLAYER DATA: " + player.currentX + ", " + player.currentY +" \n");
+
         setPlayerKeyboardEvents();
 
         primaryStage.setScene(scene);
@@ -243,18 +283,20 @@ public class Game implements Runnable, Updateable
                 player.handleHumanCommand('e');
 //                valid = true;
             }
+            if (player.needsUpdate)
+            {
+                addToLog("Want to update player\n");
+                updateHumanPlayer();
+            }
         });
-        if (player.needsUpdate)
-        {
-            addToLog("Want to update player\n");
-            updateHumanPlayer();
-        }
+
 
     }
 
     public void updateHumanPlayer()
     {
         player.update();
+        updateDebugString("REAL PLAYER DATA: " + player.currentX + ", " + player.currentY +" \n");
         ((WumpusWorldPane)gamePane).passPlayer(player);
         ((WumpusWorldPane)gamePane).update();
         if(player.querySquare)
@@ -269,7 +311,6 @@ public class Game implements Runnable, Updateable
     @Override
     public void update()
     {
-        dbgUpdateText("Test Adding Information\n"); // TODO(Andrew): Remove after working
         System.out.println("Updating");
         updateAgentPlayer();
         ((WumpusWorldPane)gamePane).update();

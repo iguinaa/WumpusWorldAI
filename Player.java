@@ -21,6 +21,8 @@ public class Player implements Updateable
     boolean hasGold = false;
     int currentX = 0;
     int currentY = 0;
+    int prevX = -1;
+    int prevY = -1;
     boolean isHuman;
     Map gameMap;
     Square currentSquare;
@@ -65,8 +67,24 @@ public class Player implements Updateable
         if(isHuman)
         {
            // do stuff
-            gameMap.update();
-            needsUpdate = false;
+//            for(int i = 0 ; i < getPlayerMap().wumpusMap.length; i++)
+//        {
+//            for(int j=0; j < getPlayerMap().wumpusMap[i].length; j++)
+//            {
+//                if(i == p.currentX && j == p.currentY)
+//                {
+//                    getPlayerMap().wumpusMap[i][j].setMapChar('A');
+//                }
+//                else
+//                {
+//                    getPlayerMap().wumpusMap[i][j].removeMapChar('A');
+//                }
+//            }
+//
+//        }
+            gameMap.update(); //FIXME(Andrew): not sure if / how this is working but its definitely doing something
+            Game.updateDebugString(Game.getDebugData().toString() + "player game map is player map? " + gameMap.isPlayerMap + "\n");
+             needsUpdate = false;
 
             return;
         }
@@ -162,23 +180,32 @@ public class Player implements Updateable
         }
     }
 
-    private void move(char direction)   {
-
+    private void move(char direction)
+    {
+        prevX = currentX;
+        prevY = currentY;
+        gameMap.wumpusMap[currentX][currentY].removeMapChar('A');
         switch (direction)  {
 
             case 'r':   currentX++; //TODO(Andrew): These need boundary checking I think? (Alec) yes they do
-                        gameMap.wumpusMap[currentX][currentY].addMapChar('V');
+                        gameMap.wumpusMap[currentX][currentY].setMapChar('V');
+                        gameMap.wumpusMap[currentX][currentY].setMapChar('A');
                         break;
             case 'l':   currentX--;
-                        gameMap.wumpusMap[currentX][currentY].addMapChar('V');
+                        gameMap.wumpusMap[currentX][currentY].setMapChar('V');
+                        gameMap.wumpusMap[currentX][currentY].setMapChar('A');
                         break;
             case 'u':   currentY++;
-                        gameMap.wumpusMap[currentX][currentY].addMapChar('V');
+                        gameMap.wumpusMap[currentX][currentY].setMapChar('V');
+                        gameMap.wumpusMap[currentX][currentY].setMapChar('A');
                         break;
             case 'd':   currentY--;
-                        gameMap.wumpusMap[currentX][currentY].addMapChar('V');
+                        gameMap.wumpusMap[currentX][currentY].setMapChar('V');
+                        gameMap.wumpusMap[currentX][currentY].setMapChar('A');
                         break;
-            default:    break;
+            default:
+                System.out.println("unexpected input in Player.move()");
+                break;
         }
 
         System.out.println("Current player square: " + currentX + ", " + currentY);
@@ -186,6 +213,53 @@ public class Player implements Updateable
         //Subtract from score for movement
         score--;
 
+    }
+    public void handleHumanCommand(char action) // u = up, d = down, l = left, r = right, f = fire, e = exit maze
+    {
+        switch (action)
+        {
+            case 'u':
+            case 'd':
+            case 'l':
+            case 'r':
+            {
+                Game.addToLog("shouldve moved a square");
+                if (facingDirection != action)
+                {
+                    Game.addToLog("WASTN FACING THE RIGHT WAY!\n");
+                    facingDirection = action;
+                } else
+                {
+                    Game.addToLog("We're about to enter the moveeeee method\n");
+                    move(action);
+                }
+                needsUpdate = true;
+            }
+            break;
+
+            case 'f':
+            {
+                shoot();
+                needsUpdate = true;
+            }
+            break;
+
+            case 'e':
+            {
+                if (currentX == 0 && currentY == 0)
+                {
+                    // TODO(Andrew): Exit Maze
+                }
+                needsUpdate = true;
+            }
+            break;
+
+            default:
+            {
+                Game.addToLog("Bad input, which should never happen\n");
+            }
+            break;
+        }
     }
 
     /** Agent Actions */
@@ -238,49 +312,7 @@ public class Player implements Updateable
         System.out.println("Final Score: " + score);
 
     }
-    public void handleHumanCommand(char action) // u = up, d = down, l = left, r = right, f = fire, e = exit maze
-    {
-        switch (action)
-        {
-            case 'u':
-            case 'd':
-            case 'l':
-            case 'r':
-            {
-                Game.addToLog("shouldve moved a square");
-                if(facingDirection != action)
-                {
-                    Game.addToLog("WASTN FACING THE RIGHT WAY!\n");
-                    facingDirection = action;
-                }
-                else
-                {
-                    Game.addToLog("We're about to enter the moveeeee method\n");
-                    move(action);
-                }
-                needsUpdate = true;
-            }break;
 
-            case 'f':
-            {
-                shoot();
-                needsUpdate = true;
-            }break;
 
-            case 'e':
-            {
-                if(currentX == 0 && currentY == 0)
-                {
-                    // TODO(Andrew): Exit Maze
-                }
-                needsUpdate = true;
-            }break;
-
-            default:
-            {
-                Game.addToLog("Bad input, which should never happen\n");
-            }break;
-        }
-    }
 
 }

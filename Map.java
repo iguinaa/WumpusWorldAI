@@ -80,7 +80,9 @@ public class Map extends GridPane implements Updateable
 
         if (blankMap) {
             seedMap();
-        } else {
+        }
+        else
+        {
             //i == x; j == y
             for(int i = 0; i < height; i++) {
 
@@ -95,7 +97,7 @@ public class Map extends GridPane implements Updateable
 
             wumpusMap[0][0].setAsStart();
             wumpusMap[0][0].setMapChar('A');
-
+            initialUpdate();
 //            for(int i = 0; i < height; i++) {
 //
 //                for (int j = 0; j < height; j++) {
@@ -230,6 +232,8 @@ public class Map extends GridPane implements Updateable
 //        wumpusMap[x][y].mapChar = 'G';
         wumpusMap[x][y].setMapChar('G');
 
+        initialUpdate();
+
     }
 
     public void printMap() {
@@ -284,6 +288,20 @@ public class Map extends GridPane implements Updateable
 //            }
 //        }
     }
+
+    public void initialUpdate()
+    {
+
+        for(int i = 0; i < width; i++) {
+
+            for (int j = 0; j < height; j++) {
+
+                wumpusMap[i][j].initialUpdate();
+
+            }
+        }
+    }
+
 
     @Override
     public void update()
