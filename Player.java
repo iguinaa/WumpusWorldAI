@@ -167,16 +167,16 @@ public class Player implements Updateable
         switch (direction)  {
 
             case 'r':   currentX++; //TODO(Andrew): These need boundary checking I think? (Alec) yes they do
-                        gameMap.wumpusMap[currentX][currentY].addMapChar('V');
+                        gameMap.wumpusMap[currentX][currentY].setMapChar('V');
                         break;
             case 'l':   currentX--;
-                        gameMap.wumpusMap[currentX][currentY].addMapChar('V');
+                        gameMap.wumpusMap[currentX][currentY].setMapChar('V');
                         break;
             case 'u':   currentY++;
-                        gameMap.wumpusMap[currentX][currentY].addMapChar('V');
+                        gameMap.wumpusMap[currentX][currentY].setMapChar('V');
                         break;
             case 'd':   currentY--;
-                        gameMap.wumpusMap[currentX][currentY].addMapChar('V');
+                        gameMap.wumpusMap[currentX][currentY].setMapChar('V');
                         break;
             default:    break;
         }
