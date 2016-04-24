@@ -48,9 +48,9 @@ public class Player implements Updateable
         needsUpdate = false;
         //Move right since that is the default direction for player to move
         // NOTE(Andrew) discussed that this should be removed. Just assume perfect knowledge of map bounds
-        int hitBump = moveForward();
+        //int hitBump = moveForward();
 
-        //TODO hand off to analyze
+        //TODO hand off to analyze (this probably isn't necessary now but we'll see)
     }
 
     public void setMap(Map m)
@@ -166,13 +166,17 @@ public class Player implements Updateable
 
         switch (direction)  {
 
-            case 'r':   currentX++; //TODO(Andrew): These need boundary checking I think?
+            case 'r':   currentX++; //TODO(Andrew): These need boundary checking I think? (Alec) yes they do
+                        gameMap.wumpusMap[currentX][currentY].addMapChar('V');
                         break;
             case 'l':   currentX--;
+                        gameMap.wumpusMap[currentX][currentY].addMapChar('V');
                         break;
             case 'u':   currentY++;
+                        gameMap.wumpusMap[currentX][currentY].addMapChar('V');
                         break;
             case 'd':   currentY--;
+                        gameMap.wumpusMap[currentX][currentY].addMapChar('V');
                         break;
             default:    break;
         }
