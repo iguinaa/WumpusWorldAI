@@ -187,22 +187,35 @@ public class Player implements Updateable
         gameMap.wumpusMap[currentX][currentY].removeMapChar('A');
         switch (direction)  {
 
-            case 'r':   currentX++; //TODO(Andrew): These need boundary checking I think? (Alec) yes they do
-                        gameMap.wumpusMap[currentX][currentY].setMapChar('V');
-                        gameMap.wumpusMap[currentX][currentY].setMapChar('A');
+            case 'r':
+                if (currentX < gameMap.getNumCols() - 1) {
+                    currentX++;
+                    gameMap.wumpusMap[currentX][currentY].setMapChar('V');
+                    gameMap.wumpusMap[currentX][currentY].setMapChar('A');
+                }
                         break;
-            case 'l':   currentX--;
-                        gameMap.wumpusMap[currentX][currentY].setMapChar('V');
-                        gameMap.wumpusMap[currentX][currentY].setMapChar('A');
+            case 'l':
+                if (currentX != 0) {
+                    currentX--;
+                    gameMap.wumpusMap[currentX][currentY].setMapChar('V');
+                    gameMap.wumpusMap[currentX][currentY].setMapChar('A');
+                }
                         break;
-            case 'u':   currentY++;
-                        gameMap.wumpusMap[currentX][currentY].setMapChar('V');
-                        gameMap.wumpusMap[currentX][currentY].setMapChar('A');
+            case 'u':
+                if (currentY < gameMap.getNumRows() - 1) {
+                    currentY++;
+                    gameMap.wumpusMap[currentX][currentY].setMapChar('V');
+                    gameMap.wumpusMap[currentX][currentY].setMapChar('A');
+                }
                         break;
-            case 'd':   currentY--;
-                        gameMap.wumpusMap[currentX][currentY].setMapChar('V');
-                        gameMap.wumpusMap[currentX][currentY].setMapChar('A');
+            case 'd':
+                if (currentY != 0) {
+                    currentY--;
+                    gameMap.wumpusMap[currentX][currentY].setMapChar('V');
+                    gameMap.wumpusMap[currentX][currentY].setMapChar('A');
+                }
                         break;
+
             default:
                 System.out.println("unexpected input in Player.move()");
                 break;
