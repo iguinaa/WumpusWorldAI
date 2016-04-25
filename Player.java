@@ -276,11 +276,12 @@ public class Player implements Updateable
     {
         prevX = currentX;
         prevY = currentY;
-        gameMap.wumpusMap[currentX][currentY].removeMapChar('A');
+
         switch (direction)  {
 
             case 'r':
                 if (currentX < gameMap.getNumCols() - 1) {
+                    gameMap.wumpusMap[currentX][currentY].removeMapChar('A');
                     currentX++;
                     gameMap.wumpusMap[currentX][currentY].setMapChar('V');
                     gameMap.wumpusMap[currentX][currentY].setMapChar('A');
@@ -289,6 +290,7 @@ public class Player implements Updateable
                         break;
             case 'l':
                 if (currentX != 0) {
+                    gameMap.wumpusMap[currentX][currentY].removeMapChar('A');
                     currentX--;
                     gameMap.wumpusMap[currentX][currentY].setMapChar('V');
                     gameMap.wumpusMap[currentX][currentY].setMapChar('A');
@@ -296,6 +298,7 @@ public class Player implements Updateable
                         break;
             case 'u':
                 if (currentY < gameMap.getNumRows() - 1) {
+                    gameMap.wumpusMap[currentX][currentY].removeMapChar('A');
                     currentY++;
                     gameMap.wumpusMap[currentX][currentY].setMapChar('V');
                     gameMap.wumpusMap[currentX][currentY].setMapChar('A');
@@ -303,6 +306,7 @@ public class Player implements Updateable
                         break;
             case 'd':
                 if (currentY != 0) {
+                    gameMap.wumpusMap[currentX][currentY].removeMapChar('A');
                     currentY--;
                     gameMap.wumpusMap[currentX][currentY].setMapChar('V');
                     gameMap.wumpusMap[currentX][currentY].setMapChar('A');
@@ -358,7 +362,7 @@ public class Player implements Updateable
                     //Add 1000 points it player got the gold out
                     if(hasGold)
                         score += 1000;
-                    
+
                     Game.addToLog("SUCCESSFUL ESCAPE! score = " + this.score + "\n");
                     Game.updatePropertiesString(Game.getProperties() + "\nSUCCESSFUL ESCAPE! score = " + this.score + "\n");
                 }
@@ -409,25 +413,6 @@ public class Player implements Updateable
         return 0;
     }
 
-    /***************** Unused I think *******************/
-    public char turn90L()
-    {
-        //TODO stub
-        char newDirection = 'r';
-        return newDirection;
-    }
-    public char turn90R()
-    {
-        //TODO stub
-        char newDirection = 'r';
-        return newDirection;
-    }
-    public int moveForward()
-    {
-        //TODO stub
-        move(facingDirection);
-        return 0;
-    }
     /******************************************************/
 
 
