@@ -211,30 +211,42 @@ public class Player implements Updateable
 
         if(!(visited.contains(gameMap.wumpusMap[currentSquare.x][currentSquare.y]))) {
             if (seen.contains('S')) {
+
+                boolean resetScore = false; //do we need to reset the wumpus score for other squares?
+
                 //change score of suspect squares if the square hasn't already been visited and is therefore safe
                 if ((currentX != gameMap.getNumCols() - 1) && unvisited.contains(gameMap.wumpusMap[currentX + 1][currentY])) {
                     gameMap.wumpusMap[currentX + 1][currentY].setWumpusDangerScore(-1);
-
+                    if(gameMap.wumpusMap[currentX + 1][currentY].getWumpusDangerScore() < -2) {
+                        gameMap.wumpusMap[currentX + 1][currentY].setWumpusDangerScore(-1000);
+                    }
                 }
 
                 if ((currentX != 0) && (unvisited.contains(gameMap.wumpusMap[currentX - 1][currentY]))) {
                     gameMap.wumpusMap[currentX - 1][currentY].setWumpusDangerScore(-1);
+                    if(gameMap.wumpusMap[currentX - 1][currentY].getWumpusDangerScore() < -2){
+                        gameMap.wumpusMap[currentX - 1][currentY].setWumpusDangerScore(-1000);
+                    }
 
                 }
 
                 if ((currentY != gameMap.getNumRows() - 1) && (unvisited.contains(gameMap.wumpusMap[currentX][currentY + 1]))) {
                     gameMap.wumpusMap[currentX][currentY + 1].setWumpusDangerScore(-1);
+                    if(gameMap.wumpusMap[currentX][currentY + 1].getWumpusDangerScore() < -2){
+                        gameMap.wumpusMap[currentX][currentY + 1].setWumpusDangerScore(-1000);
+                    }
 
                 }
 
                 if ((currentY != 0) && (unvisited.contains(gameMap.wumpusMap[currentX][currentY - 1]))) {
                     gameMap.wumpusMap[currentX][currentY - 1].setWumpusDangerScore(-1);
+                    if(gameMap.wumpusMap[currentX][currentY - 1].getWumpusDangerScore() < -2){
+                        gameMap.wumpusMap[currentX][currentY - 1].setWumpusDangerScore(-1000);
+                    }
 
                 }
+
             }
-
-
-            //TODO reset scores when wumpus is found?
 
             //track breeze to try to identify pits
             if (seen.contains('B')) {
@@ -501,6 +513,5 @@ public class Player implements Updateable
         dist = Math.abs(to.x - currentSquare.x) + Math.abs(to.y - currentSquare.y);
         return dist;
     }
-
 
 }
