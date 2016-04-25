@@ -375,6 +375,13 @@ public class Square extends HBox implements Updateable
         }
         arrCounter = 0;
 
+        if (this.wasVisited)
+        {
+            if (!attributes.contains(Character.valueOf('V')))
+            {
+                attributes.add(new Character('V'));
+            }
+        }
 
         if (this.hasPlayer)
         {
@@ -438,13 +445,7 @@ public class Square extends HBox implements Updateable
         }
         arrCounter = 0;
 
-        if (this.wasVisited)
-        {
-            if (!attributes.contains(Character.valueOf('V')))
-            {
-                attributes.add(new Character('V'));
-            }
-        }
+
 
         attrsNeedUpdate = false;
 
