@@ -32,6 +32,7 @@ public class Player implements Updateable
     boolean isDead = false;
     ArrayList<Square> unvisited;
     ArrayList<Square> visited;
+    ArrayList<Square> fringe;
 
     /*Scoring:
     * +1000 points for climbing out of the cave with the gold
@@ -46,6 +47,7 @@ public class Player implements Updateable
     {
         unvisited = new ArrayList<>();
         visited = new ArrayList<>();
+        fringe = new ArrayList<>();
         querySquare = true;
         this.isHuman = isHuman;
         gameMap = new Map(false);
@@ -88,7 +90,7 @@ public class Player implements Updateable
             Game.addToLog("DEAD, Score = " + dead() + "\n");
             isDead = false;// TODO(Andrew) Remove, only for testing
         }
-        if(isHuman)
+        if(isHuman) // TODO(Andrew): Should all of this happen regardless if human or not?
         {
            // do stuff
 //            for(int i = 0 ; i < getPlayerMap().wumpusMap.length; i++)
@@ -112,7 +114,8 @@ public class Player implements Updateable
             }
             gameMap.update(); //FIXME(Andrew): not sure if / Think this works...
 //            Game.updateDebugString(Game.getDebugData().toString() + "player game map is player map? " + gameMap.isPlayerMap + "\n");
-             needsUpdate = false;
+
+            needsUpdate = false;
 
 
         }
@@ -120,11 +123,53 @@ public class Player implements Updateable
         {
 
         }
-//        performNextAction();  //NOTE: Maybe move somewhere else in the order?
-//        perceiveEnvironment();
-//        updateKnowledge();
-//        DetermineNextAction();
+//        performNextAction();  this would take multiple steps...
+//        perceiveEnvironment();    Now: needsUpdate = true; querySquare = true;
+//        updateKnowledge();    Now: checkSquare()
+//        DetermineNextAction(); requires calculation of heuristic for each Square in fringe.
         Game.updatePropertiesString("Score: " + this.score + "\n");
+    }
+
+    /** These are the next possible squares to investigate*/
+    private void updateFringe()
+    {
+        if(currentSquare != null)
+        {
+            if(fringe.contains(gameMap.wumpusMap[currentSquare.x][currentSquare.y]))
+                fringe.remove(gameMap.wumpusMap[currentSquare.x][currentSquare.y]);
+
+            if ( (currentX != gameMap.getNumCols() - 1) &&
+                    unvisited.contains(gameMap.wumpusMap[currentX + 1][currentY]) &&
+                    !(fringe.contains(gameMap.wumpusMap[currentX + 1][currentY])) )
+            {
+                fringe.add(gameMap.wumpusMap[currentX + 1][currentY]);
+            }
+
+            if ((currentX != 0) &&
+                    (unvisited.contains(gameMap.wumpusMap[currentX - 1][currentY])) &&
+                    !(fringe.contains(gameMap.wumpusMap[currentX - 1][currentY])))
+            {
+                fringe.add(gameMap.wumpusMap[currentX - 1][currentY]);
+            }
+
+            if ((currentY != gameMap.getNumRows() - 1) &&
+                    ( unvisited.contains(gameMap.wumpusMap[currentX][currentY + 1])) &&
+                    !(fringe.contains(gameMap.wumpusMap[currentX][currentY + 1])))
+            {
+                fringe.add(gameMap.wumpusMap[currentX][currentY + 1]);
+            }
+
+            if ((currentY != 0) &&
+                    (unvisited.contains(gameMap.wumpusMap[currentX][currentY - 1])) &&
+                    !(fringe.contains(gameMap.wumpusMap[currentX][currentY - 1])))
+            {
+                fringe.add(gameMap.wumpusMap[currentX][currentY - 1]);
+            }
+        }
+        else
+        {
+            System.out.println("tried to update fringe with null current square");
+        }
     }
 
     private void checkSquare(Square s) {
@@ -160,33 +205,8 @@ public class Player implements Updateable
         {
             gameMap.wumpusMap[currentSquare.x][currentSquare.y].setMapChar(c.charValue());
         }
-        //TODO track if wumpus or pit so you lose 1000 points and game over
+        updateFringe();
 
-        //TODO track stench to try to identify where wumpus is
-        //track stench to try to identify where wumpus is
-//        if (seen.contains('S'))
-//        {
-//            //change score of suspect squares if the square hasn't already been visited and is therefore safe
-//            if ((currentX != gameMap.getNumCols() - 1) && (!gameMap.wumpusMap[currentX + 1][currentY].isWasVisited())) {
-//                gameMap.wumpusMap[currentX + 1][currentY].setWumpusDangerScore(-1);
-//
-//            }
-//
-//            if ((currentX != 0) && (!gameMap.wumpusMap[currentX - 1][currentY].isWasVisited())) {
-//                gameMap.wumpusMap[currentX - 1][currentY].setWumpusDangerScore(-1);
-//
-//            }
-//
-//            if ((currentY != gameMap.getNumRows() - 1) && (!gameMap.wumpusMap[currentX][currentY + 1].isWasVisited())) {
-//                gameMap.wumpusMap[currentX][currentY + 1].setWumpusDangerScore(-1);
-//
-//            }
-//
-//            if ((currentY != 0) && (!gameMap.wumpusMap[currentX][currentY - 1].isWasVisited())) {
-//                gameMap.wumpusMap[currentX][currentY - 1].setWumpusDangerScore(-1);
-//
-//            }
-//        }
         if (seen.contains('S'))
         {
             //change score of suspect squares if the square hasn't already been visited and is therefore safe
@@ -218,7 +238,6 @@ public class Player implements Updateable
         if (seen.contains('B')) {
 
             //change score of suspect squares if the square hasn't already been visited (and is therefore safe)
-            // FIXME(Andrew) this is updating incorrectly. Going to use setMapChar('V') after testing
             if ((currentX != gameMap.getNumCols() - 1) && unvisited.contains(gameMap.wumpusMap[currentX + 1][currentY]) )
             {
                 gameMap.wumpusMap[currentX + 1][currentY].setPitDangerScore(-1);
@@ -241,6 +260,11 @@ public class Player implements Updateable
             }
 
         }
+        //TODO reset scores when pits are identified?
+
+        //TODO(Andrew): reset scores when visiting a square and not dying
+
+
         //grab gold
         if (seen.contains('G')) {
 
@@ -357,7 +381,6 @@ public class Player implements Updateable
     /** Agent Actions */
     public void grab()
     {
-        //TODO stub
         if(currentSquare != null)
         {
             if(currentSquare.getAttributes().contains('G'))
@@ -379,6 +402,8 @@ public class Player implements Updateable
 
         return 0;
     }
+
+    /***************** Unused I think *******************/
     public char turn90L()
     {
         //TODO stub
@@ -397,6 +422,8 @@ public class Player implements Updateable
         move(facingDirection);
         return 0;
     }
+    /******************************************************/
+
 
     /** returns Score */
     public int dead()
@@ -404,6 +431,17 @@ public class Player implements Updateable
         int returnScore = 0;
         if(isDead)
         {
+            if (currentSquare.getAttributes().contains('P'))
+            {
+                System.out.println("Wumpus got you!");
+                Game.addToLog("Wumpus got you!\n");
+            }
+            else if (currentSquare.getAttributes().contains('P'))
+            {
+
+                System.out.println("You fell in a pit!");
+                Game.addToLog("You fell in a pit!\n");
+            }
             score += -1000;
             returnScore = score;
         }
@@ -416,8 +454,6 @@ public class Player implements Updateable
 
     //TODO shoot wumpus
 
-    //TODO map dungeon
-
     //TODO process data
 
     //TODO leave dungeon
@@ -427,6 +463,13 @@ public class Player implements Updateable
 
     }
 
+
+    public int getManhattanDistFromCurrent(Square to)
+    {
+        int dist = 0;
+        dist = Math.abs(to.x - currentSquare.x) + Math.abs(to.y - currentSquare.y);
+        return dist;
+    }
 
 
 }
