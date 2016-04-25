@@ -23,6 +23,7 @@ public class Player implements Updateable
     boolean querySquare;
     boolean isDead = false;
     boolean hasWon = false;
+    boolean heardScream = false;
     ArrayList<Square> unvisited;
     ArrayList<Square> visited;
     ArrayList<Square> fringe;
@@ -78,6 +79,7 @@ public class Player implements Updateable
     @Override
     public void update()
     {
+
         if(isDead)
         {
             Game.addToLog("DEAD, Score = " + dead() + "\n");
@@ -348,8 +350,13 @@ public class Player implements Updateable
 
             case 'f':
             {
-                shoot();
-                needsUpdate = true;
+            	if(!hasArrow){
+            		Game.addToLog("Unable to shoot arrow. Already fired.\n");
+            	}
+            	else{
+            		shoot();
+                	needsUpdate = true;
+                }
             }
             break;
 
@@ -405,12 +412,45 @@ public class Player implements Updateable
     public int shoot()
     {
         //TODO Stub
+    	Square wumpusCheckSquare = currentSquare;
         hasArrow = false;
         score -= 10;
-
+        Game.addToLog("shot arrow\nfacingdirection "+facingDirection+"\n");
+        if(facingDirection == 'r'){
+        	for(int wc = wumpusCheckSquare.x; wc < gameMap.getNumRows(); wc++){
+        		wumpusCheckSquare.x = wc;
+        		System.out.println(wumpusCheckSquare.x + " "+wumpusCheckSquare.y+"\n");
+        		shotWumpus(wumpusCheckSquare);
+        	}
+        }
+        else if(facingDirection =='u'){
+        	for(int wc = wumpusCheckSquare.y; wc < gameMap.getNumCols(); wc++){
+        		wumpusCheckSquare.y = wc;
+        		shotWumpus(wumpusCheckSquare);
+        	}
+        }
+        else if(facingDirection == 'd'){
+        	for(int wc = wumpusCheckSquare.y; wc < gameMap.getNumCols(); wc--){
+        		wumpusCheckSquare.y = wc;
+        		shotWumpus(wumpusCheckSquare);
+        	}
+        }
+        else{ //direction l
+        	for(int wc = wumpusCheckSquare.x+1; wc < gameMap.getNumRows(); wc--){
+        		wumpusCheckSquare.x = wc;
+        		shotWumpus(wumpusCheckSquare);
+        	}
+        }
         //TODO check if wumpus is dead and update map
 
         return 0;
+    }
+   
+    public void shotWumpus(Square s){
+    	if(Game.wumpusDeadCheck(s)){
+			Game.addToLog("Shot wumpus\n");
+			heardScream = true;
+		}
     }
 
     /******************************************************/
