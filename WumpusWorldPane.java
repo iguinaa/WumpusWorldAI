@@ -66,6 +66,9 @@ public class WumpusWorldPane extends GamePane implements Updateable
         KB.textProperty().bind(Game.KB);
         properties.textProperty().bind(Game.properties);
         dbgData.textProperty().bind(Game.debugData);
+        properties.setFill(Color.rgb(212, 206, 70));
+        KB.setFill(Color.rgb(212, 206, 70));
+        dbgData.setFill(Color.rgb(212, 206, 70));
 //        bottom.setAlignment(Pos.CENTER);
 
         bottom.getChildren().addAll(KB, properties, Game.log, dbgData);

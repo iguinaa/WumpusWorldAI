@@ -201,9 +201,9 @@ public class Game implements Runnable, Updateable
     {
         gamePane = new WumpusWorldPane(WIDTH, HEIGHT);
         buildGamePane();
-        dbgPane((Pane)(gamePane.getMainPane()), Color.CYAN);
-        dbgPane((Pane)gamePane.getBottom(), Color.DARKKHAKI);
-        dbgPane((Pane)gamePane.getLeft(), Color.INDIANRED);
+        dbgPane((Pane)(gamePane.getMainPane()), Color.rgb(74, 186, 145));
+        dbgPane((Pane)gamePane.getBottom(), Color.rgb(73, 75, 75));
+        dbgPane((Pane)gamePane.getLeft(), Color.rgb(13, 146, 99));
 
         boolean isPerson = true;    //TODO(Andrew) change this when algorithm is done
         player = new Player(isPerson);
