@@ -34,7 +34,7 @@ public class Player implements Updateable
     * -1 for each action taken
     * -10 for using up the arrow
     */
-    private int score = 0;
+    public int score = 0;
 
 
     public Player(boolean isHuman)
@@ -376,6 +376,7 @@ public class Player implements Updateable
             {
                 if (currentX == 0 && currentY == 0)
                 {
+
                     // TODO(Andrew): Exit Maze
                     hasWon = true;
                     //Add 1000 points it player got the gold out
@@ -384,6 +385,10 @@ public class Player implements Updateable
 
                     Game.addToLog("SUCCESSFUL ESCAPE! score = " + this.score + "\n");
                     Game.updatePropertiesString(Game.getProperties() + "\nSUCCESSFUL ESCAPE! score = " + this.score + "\n");
+                    escape();
+                }
+                else{
+                	Game.addToLog("Unable to escape at this time. Must be in start location [0,0]\n");
                 }
                 needsUpdate = true;
             }
@@ -478,12 +483,14 @@ public class Player implements Updateable
             {
                 System.out.println("Wumpus got you!");
                 Game.addToLog("Wumpus got you!\n");
+                Game.nowDead(1);
             }
             else if (currentSquare.getAttributes().contains('P'))
             {
 
                 System.out.println("You fell in a pit!");
                 Game.addToLog("You fell in a pit!\n");
+                Game.nowDead(2);
             }
             score += -1000;
             returnScore = score;
@@ -501,9 +508,10 @@ public class Player implements Updateable
 
     //TODO leave dungeon
     private void escape() {
-
+    		
         System.out.println("Final Score: " + score);
-
+        Game.addToLog("Final Score: " + score+"\n");
+        Game.escapeStage(score);
     }
 
 

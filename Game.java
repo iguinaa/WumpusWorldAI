@@ -5,16 +5,21 @@ import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.util.ArrayList;
 
 
@@ -29,13 +34,11 @@ public class Game implements Runnable, Updateable
     public final int NUM_COLS = 4;
     public final int TOTAL_CELLS = NUM_ROWS * NUM_COLS;
 
-    Stage primaryStage; // Window handle
+    static Stage primaryStage; // Window handle
     static GamePane gamePane;    // root pane == container for a scene
     Scene scene;// This scene/canvas handle
     boolean isRunning = true;
     Player player;
-
-
 
 
     // This is for data
@@ -238,6 +241,115 @@ public class Game implements Runnable, Updateable
             }
         });
 
+    }
+    
+    public static void escapeStage(int score){
+    	Image link = new Image("linkbow.png");
+		ImageView iv1 = new ImageView();
+		iv1.setImage(link);
+    	String sr = Integer.toString(score);
+    	Scene escapeScene = new Scene(new Group());
+    	Stage escapeStage = new Stage();
+    	Text results = new Text();
+    	results.setFont(Font.font(40));
+    	if(score < 0){
+    		results.setText("You lost!");
+    	}
+    	else
+    		results.setText("You won!");
+    	Text scoreResults = new Text();
+    	scoreResults.setFont(Font.font(30));
+    	scoreResults.setText("Final Score: "+sr);
+    	Button btnClose = new Button();
+    	btnClose.setText("Close Game");
+    	btnClose.setOnMouseClicked(new EventHandler<MouseEvent>(){
+    		@Override
+    		public void handle(MouseEvent event){
+    			escapeStage.hide();
+    			primaryStage.hide();
+    		}
+    	});
+    	
+    	escapeStage.setTitle("Quest Results");
+    	//escapeStage.setWidth(300);
+    	//escapeStage.setHeight(200);
+    	escapeStage.initModality(Modality.WINDOW_MODAL);
+    	escapeStage.initOwner(primaryStage);
+    	
+
+    	VBox hbox = new VBox();
+    	hbox.setAlignment(Pos.CENTER);
+    	hbox.getChildren().addAll(results,scoreResults,iv1,btnClose);
+    	((Group) escapeScene.getRoot()).getChildren().add(hbox);
+    	
+    	escapeStage.setScene(escapeScene);
+    	escapeStage.show();
+    	
+    }
+    
+    public static void nowDead(int whichDead){
+    	if(whichDead == 1){
+    		Image wumpus = new Image("ganon.png");
+    		ImageView iv1 = new ImageView();
+    		iv1.setImage(wumpus);
+    		Stage wumpusEatStage = new Stage();
+    		Scene wumpusEatScene = new Scene(new Group());
+        	Text w = new Text();
+        	w.setText("You got eaten by the Wumpus");
+        	w.setFont(Font.font(40));
+        	Button btnClose = new Button();
+        	btnClose.setText("Close Game");
+        	btnClose.setOnMouseClicked(new EventHandler<MouseEvent>(){
+        		@Override
+        		public void handle(MouseEvent event){
+        			wumpusEatStage.hide();
+        			primaryStage.hide();
+        		}
+        	});
+        	wumpusEatStage.setTitle("Quest Results");
+        	wumpusEatStage.initModality(Modality.WINDOW_MODAL);
+        	wumpusEatStage.initOwner(primaryStage);
+        	
+
+        	VBox hbox = new VBox();
+        	hbox.setAlignment(Pos.CENTER);
+        	hbox.getChildren().addAll(w,iv1,btnClose);
+        	((Group) wumpusEatScene.getRoot()).getChildren().add(hbox);
+        	
+        	wumpusEatStage.setScene(wumpusEatScene);
+        	wumpusEatStage.show();
+    	}
+    	else{
+    		Image pit = new Image("Sarlacc.jpg");
+    		ImageView iv1 = new ImageView();
+    		iv1.setImage(pit);
+    		Stage pitFallStage = new Stage();
+    		Scene pitFallScene = new Scene(new Group());
+        	Text p = new Text();
+        	p.setText("You fell into a pit!");
+        	p.setFont(Font.font(40));
+        	Button btnClose = new Button();
+        	btnClose.setText("Close Game");
+        	btnClose.setOnMouseClicked(new EventHandler<MouseEvent>(){
+        		@Override
+        		public void handle(MouseEvent event){
+        			pitFallStage.hide();
+        			primaryStage.hide();
+        		}
+        	});
+        	pitFallStage.setTitle("Quest Results");
+        	pitFallStage.initModality(Modality.WINDOW_MODAL);
+        	pitFallStage.initOwner(primaryStage);
+        	
+
+        	VBox hbox = new VBox();
+        	hbox.setAlignment(Pos.CENTER);
+        	hbox.getChildren().addAll(p,iv1,btnClose);
+        	((Group) pitFallScene.getRoot()).getChildren().add(hbox);
+        	
+        	pitFallStage.setScene(pitFallScene);
+        	pitFallStage.show();
+    	}
     }
 
     public void setPlayerKeyboardEvents()
