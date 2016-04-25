@@ -313,7 +313,24 @@ public class Player implements Updateable
 
 
 
-    //TODO shoot wumpus
+    //shoot wumpus
+    private void shootArrow(char direction){
+
+        hasArrow = false;
+        switch (direction){
+
+            //TODO search through each square in the stated direction for wumpus, if found wumpus dies
+            case 'r':
+                break;
+            case 'l':
+                break;
+            case 'u':
+                break;
+            case 'd':
+                break;
+        }
+
+    }
 
     //TODO map dungeon
 
