@@ -295,16 +295,22 @@ public class Game implements Runnable, Updateable
 
     public void updateHumanPlayer()
     {
-        player.update();
-        updateDebugString("REAL PLAYER DATA: " + player.currentX + ", " + player.currentY +" \n");
-        ((WumpusWorldPane)gamePane).passPlayer(player);
-         ((WumpusWorldPane)gamePane).update();
         if(player.querySquare)
         {
             System.out.println("query square");
             player.currentSquare = ((WumpusWorldPane) gamePane).getWorldMap().wumpusMap[player.currentX][player.currentY];
             player.querySquare = false;
         }
+        player.update();
+        updateDebugString("REAL PLAYER DATA: " + player.currentX + ", " + player.currentY +" \n");
+        ((WumpusWorldPane)gamePane).passPlayer(player);
+         ((WumpusWorldPane)gamePane).update();
+//        if(player.querySquare)
+//        {
+//            System.out.println("query square");
+//            player.currentSquare = ((WumpusWorldPane) gamePane).getWorldMap().wumpusMap[player.currentX][player.currentY];
+//            player.querySquare = false;
+//        }
 
     }
 

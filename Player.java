@@ -41,6 +41,7 @@ public class Player implements Updateable
 
     public Player(boolean isHuman)
     {
+        querySquare = true;
         this.isHuman = isHuman;
         gameMap = new Map(false);
         currentSquare = null;
@@ -82,8 +83,12 @@ public class Player implements Updateable
 //            }
 //
 //        }
-            gameMap.update(); //FIXME(Andrew): not sure if / how this is working but its definitely doing something
-            Game.updateDebugString(Game.getDebugData().toString() + "player game map is player map? " + gameMap.isPlayerMap + "\n");
+            if(currentSquare != null)
+            {
+                checkSquare(currentSquare);
+            }
+            gameMap.update(); //FIXME(Andrew): not sure if / Think this works...
+//            Game.updateDebugString(Game.getDebugData().toString() + "player game map is player map? " + gameMap.isPlayerMap + "\n");
              needsUpdate = false;
 
             return;
@@ -96,6 +101,13 @@ public class Player implements Updateable
 
     private void checkSquare(Square s) {
         ArrayList<Character> seen = currentSquare.getPerceptions();
+        String sees = "Player sees: ";
+        for(int i =0; i < seen.size(); i++)
+        {
+            sees = sees + seen.get(i).toString();
+        }
+        sees = sees + "\n";
+        Game.addToLog(sees);
 //        if (seen.contains()) {
 //
 //            //TODO print to GUI
@@ -192,6 +204,7 @@ public class Player implements Updateable
                     currentX++;
                     gameMap.wumpusMap[currentX][currentY].setMapChar('V');
                     gameMap.wumpusMap[currentX][currentY].setMapChar('A');
+
                 }
                         break;
             case 'l':
@@ -220,6 +233,7 @@ public class Player implements Updateable
                 System.out.println("unexpected input in Player.move()");
                 break;
         }
+        querySquare = true;
 
         System.out.println("Current player square: " + currentX + ", " + currentY);
 
@@ -236,14 +250,14 @@ public class Player implements Updateable
             case 'l':
             case 'r':
             {
-                Game.addToLog("shouldve moved a square");
+//                Game.addToLog("shouldve moved a square");
                 if (facingDirection != action)
                 {
                     Game.addToLog("WASTN FACING THE RIGHT WAY!\n");
                     facingDirection = action;
                 } else
                 {
-                    Game.addToLog("We're about to enter the moveeeee method\n");
+//                    Game.addToLog("We're about to enter the moveeeee method\n");
                     move(action);
                 }
                 needsUpdate = true;
