@@ -30,6 +30,7 @@ public class Player implements Updateable
     boolean needsUpdate; // aka Has performed action
     boolean querySquare;
     boolean isDead = false;
+    boolean hasWon = false;
     ArrayList<Square> unvisited;
     ArrayList<Square> visited;
     ArrayList<Square> fringe;
@@ -199,71 +200,77 @@ public class Player implements Updateable
 //        }
 
         //Add to visited squares, remove from unvisited
-        unvisited.remove(gameMap.wumpusMap[currentSquare.x][currentSquare.y]);
-        visited.add(gameMap.wumpusMap[currentSquare.x][currentSquare.y]);
+        if(unvisited.contains(gameMap.wumpusMap[currentSquare.x][currentSquare.y]))
+            unvisited.remove(gameMap.wumpusMap[currentSquare.x][currentSquare.y]);
+
         for(Character c : seen)
         {
             gameMap.wumpusMap[currentSquare.x][currentSquare.y].setMapChar(c.charValue());
         }
         updateFringe();
 
-        if (seen.contains('S'))
+        for (Square theSquare: visited)
         {
-            //change score of suspect squares if the square hasn't already been visited and is therefore safe
-            if ( (currentX != gameMap.getNumCols() - 1) && unvisited.contains(gameMap.wumpusMap[currentX + 1][currentY]) )
-            {
-                gameMap.wumpusMap[currentX + 1][currentY].setWumpusDangerScore(-1);
-
-            }
-
-            if ((currentX != 0) && (unvisited.contains(gameMap.wumpusMap[currentX - 1][currentY])) ) {
-                gameMap.wumpusMap[currentX - 1][currentY].setWumpusDangerScore(-1);
-
-            }
-
-            if ((currentY != gameMap.getNumRows() - 1) && ( unvisited.contains(gameMap.wumpusMap[currentX][currentY + 1]))) {
-                gameMap.wumpusMap[currentX][currentY + 1].setWumpusDangerScore(-1);
-
-            }
-
-            if ((currentY != 0) && (unvisited.contains(gameMap.wumpusMap[currentX][currentY - 1]))) {
-                gameMap.wumpusMap[currentX][currentY - 1].setWumpusDangerScore(-1);
-
-            }
+            theSquare.resetWumpusDangerScore();
+            theSquare.resetPitDangerScore();
         }
 
-        //TODO reset scores when wumpus is found?
+        if(!(visited.contains(gameMap.wumpusMap[currentSquare.x][currentSquare.y]))) {
+            if (seen.contains('S')) {
+                //change score of suspect squares if the square hasn't already been visited and is therefore safe
+                if ((currentX != gameMap.getNumCols() - 1) && unvisited.contains(gameMap.wumpusMap[currentX + 1][currentY])) {
+                    gameMap.wumpusMap[currentX + 1][currentY].setWumpusDangerScore(-1);
 
-        //track breeze to try to identify pits
-        if (seen.contains('B')) {
+                }
 
-            //change score of suspect squares if the square hasn't already been visited (and is therefore safe)
-            if ((currentX != gameMap.getNumCols() - 1) && unvisited.contains(gameMap.wumpusMap[currentX + 1][currentY]) )
-            {
-                gameMap.wumpusMap[currentX + 1][currentY].setPitDangerScore(-1);
+                if ((currentX != 0) && (unvisited.contains(gameMap.wumpusMap[currentX - 1][currentY]))) {
+                    gameMap.wumpusMap[currentX - 1][currentY].setWumpusDangerScore(-1);
 
+                }
+
+                if ((currentY != gameMap.getNumRows() - 1) && (unvisited.contains(gameMap.wumpusMap[currentX][currentY + 1]))) {
+                    gameMap.wumpusMap[currentX][currentY + 1].setWumpusDangerScore(-1);
+
+                }
+
+                if ((currentY != 0) && (unvisited.contains(gameMap.wumpusMap[currentX][currentY - 1]))) {
+                    gameMap.wumpusMap[currentX][currentY - 1].setWumpusDangerScore(-1);
+
+                }
             }
 
-            if ((currentX != 0) && (unvisited.contains(gameMap.wumpusMap[currentX - 1][currentY])) )  {
-                gameMap.wumpusMap[currentX - 1][currentY].setPitDangerScore(-1);
+
+            //TODO reset scores when wumpus is found?
+
+            //track breeze to try to identify pits
+            if (seen.contains('B')) {
+
+                //change score of suspect squares if the square hasn't already been visited (and is therefore safe)
+                if ((currentX != gameMap.getNumCols() - 1) && unvisited.contains(gameMap.wumpusMap[currentX + 1][currentY])) {
+                    gameMap.wumpusMap[currentX + 1][currentY].setPitDangerScore(-1);
+
+                }
+
+                if ((currentX != 0) && (unvisited.contains(gameMap.wumpusMap[currentX - 1][currentY]))) {
+                    gameMap.wumpusMap[currentX - 1][currentY].setPitDangerScore(-1);
+
+                }
+
+                if ((currentY != gameMap.getNumRows() - 1) && (unvisited.contains(gameMap.wumpusMap[currentX][currentY + 1]))) {
+                    gameMap.wumpusMap[currentX][currentY + 1].setPitDangerScore(-1);
+
+                }
+
+                if ((currentY != 0) && (unvisited.contains(gameMap.wumpusMap[currentX][currentY - 1]))) {
+                    gameMap.wumpusMap[currentX][currentY - 1].setPitDangerScore(-1);
+
+                }
 
             }
+            //TODO reset scores when pits are identified?
 
-            if ((currentY != gameMap.getNumRows() - 1) && ( unvisited.contains(gameMap.wumpusMap[currentX][currentY + 1]))) {
-                gameMap.wumpusMap[currentX][currentY + 1].setPitDangerScore(-1);
-
-            }
-
-            if ((currentY != 0) && (unvisited.contains(gameMap.wumpusMap[currentX][currentY - 1]))) {
-                gameMap.wumpusMap[currentX][currentY - 1].setPitDangerScore(-1);
-
-            }
-
+            visited.add(gameMap.wumpusMap[currentSquare.x][currentSquare.y]);
         }
-        //TODO reset scores when pits are identified?
-
-        //TODO(Andrew): reset scores when visiting a square and not dying
-
 
         //grab gold
         if (seen.contains('G')) {
@@ -355,6 +362,10 @@ public class Player implements Updateable
                 if (currentX == 0 && currentY == 0)
                 {
                     // TODO(Andrew): Exit Maze
+                    hasWon = true;
+                    int score = win();
+                    Game.addToLog("SUCCESSFUL ESCAPE! score = " + this.score + "\n");
+                    Game.updatePropertiesString(Game.getProperties() + "\nSUCCESSFUL ESCAPE! score = " + this.score + "\n");
                 }
                 needsUpdate = true;
             }
@@ -423,6 +434,33 @@ public class Player implements Updateable
         return 0;
     }
     /******************************************************/
+
+    /** returns Score */
+    public int win()
+    {
+        int returnScore = 0;
+        if(isDead)
+        {
+            if (currentSquare.getAttributes().contains('P'))
+            {
+                System.out.println("Wumpus got you!");
+                Game.addToLog("Wumpus got you!\n");
+            }
+            else if (currentSquare.getAttributes().contains('P'))
+            {
+
+                System.out.println("You fell in a pit!");
+                Game.addToLog("You fell in a pit!\n");
+            }
+            score += -1000;
+            returnScore = score;
+        }
+        else
+        {
+            System.out.println("Someone called dead while the player was still alive");
+        }
+        return  returnScore;
+    }
 
 
     /** returns Score */

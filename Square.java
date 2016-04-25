@@ -772,7 +772,9 @@ public class Square extends HBox implements Updateable
 
     public void resetPitDangerScore() {
 
+        totalDangerScore -= pitDangerScore;
         pitDangerScore = 0;
+
 
     }
 
@@ -787,6 +789,7 @@ public class Square extends HBox implements Updateable
     }
 
     public void resetWumpusDangerScore() {
+        totalDangerScore -= wumpusDangerScore;
         wumpusDangerScore = 0;
     }
 
