@@ -52,7 +52,7 @@ public class Square extends HBox implements Updateable
         updateLayout();
 
     }
-
+    public boolean isVisited;
     public boolean attrsNeedUpdate;
     public boolean percNeedsUpdate;
     public boolean isStart = false;// This must be settable by player or map
@@ -836,3 +836,5 @@ public class Square extends HBox implements Updateable
 
 
 }
+
+

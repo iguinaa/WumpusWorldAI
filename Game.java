@@ -205,7 +205,7 @@ public class Game implements Runnable, Updateable
         dbgPane((Pane)gamePane.getBottom(), Color.DARKKHAKI);
         dbgPane((Pane)gamePane.getLeft(), Color.INDIANRED);
 
-        boolean isPerson = true;    //TODO(Andrew) change this when algorithm is done
+        boolean isPerson = false;    //TODO(Andrew) change this when algorithm is done
         player = new Player(isPerson);
         player.setMap(((WumpusWorldPane)gamePane).getPlayerMap());
 
@@ -218,7 +218,13 @@ public class Game implements Runnable, Updateable
         primaryStage.setScene(scene);
         primaryStage.show();
         player.initialUpdate();
-        updateHumanPlayer();
+        if(isPerson)
+            updateHumanPlayer();
+        else
+            updateAgentPlayer();
+
+
+
         return 0;
     }
 
@@ -323,12 +329,34 @@ public class Game implements Runnable, Updateable
 
     }
 
+    public void updateAgentPlayer()
+    {
+        /**  This is all the normal update stuff **/
+        if(player.querySquare)
+        {
+            System.out.println("query square");
+            player.currentSquare = ((WumpusWorldPane) gamePane).getWorldMap().wumpusMap[player.currentX][player.currentY];
+            if(player.currentSquare.getAttributes().contains('W') | player.currentSquare.getAttributes().contains('P'))
+            {
+                player.isDead = true;
+            }
+            player.querySquare = false;
+        }
+        player.update();
+        updateDebugString("REAL PLAYER DATA: " + player.currentX + ", " + player.currentY +" \n");
+        ((WumpusWorldPane)gamePane).passPlayer(player);
+        ((WumpusWorldPane)gamePane).update();
+        /**  This is all the normal update stuff **/
+
+    }
+
     @Override
     public void update()
     {
+        player.generateEvent();
         System.out.println("Updating");
         updateAgentPlayer();
-        ((WumpusWorldPane)gamePane).update();
+
     }
 
     public void dbgUpdateText(String s)
@@ -339,10 +367,7 @@ public class Game implements Runnable, Updateable
         addToLog(s);
     }
 
-    public void updateAgentPlayer()
-    {
-        player.update();
-    }
+
 
     public static void dbgPane(Pane p, Color c)
     {
