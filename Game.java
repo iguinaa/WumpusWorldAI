@@ -30,7 +30,7 @@ public class Game implements Runnable, Updateable
     public final int TOTAL_CELLS = NUM_ROWS * NUM_COLS;
 
     Stage primaryStage; // Window handle
-    GamePane gamePane;    // root pane == container for a scene
+    static GamePane gamePane;    // root pane == container for a scene
     Scene scene;// This scene/canvas handle
     boolean isRunning = true;
     Player player;
@@ -298,6 +298,16 @@ public class Game implements Runnable, Updateable
 
     }
 
+    public static boolean wumpusDeadCheck(Square s){
+    	//System.out.println("in wumpus dead check");
+    	if(((WumpusWorldPane) gamePane).getWorldMap().wumpusMap[s.x][s.y].getAttributes().contains('W')){
+    		
+    		return true;
+    		}
+    	else
+    		return false;
+    }
+    
     public void updateHumanPlayer()
     {
         if(player.querySquare)
