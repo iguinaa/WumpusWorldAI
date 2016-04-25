@@ -129,10 +129,12 @@ public class WumpusWorldPane extends GamePane implements Updateable
                 {
                     getWorldMap().wumpusMap[i][j].setMapChar('A');
                     Game.addToLog("Player Loc = " + i + ", " + j + "\n");
+//                    getWorldMap().wumpusMap[i][j].update();
                 }
                 else
                 {
                     getWorldMap().wumpusMap[i][j].removeMapChar('A');
+//                    getWorldMap().wumpusMap[i][j].update();
 //                    Game.addToLog("Not Player\n");
                 }
             }
