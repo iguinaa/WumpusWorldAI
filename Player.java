@@ -36,7 +36,7 @@ public class Player implements Updateable
     * -1 for each action taken
     * -10 for using up the arrow
     */
-    int score = 0;
+    private int score = 0;
 
 
     public Player(boolean isHuman)

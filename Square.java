@@ -334,6 +334,13 @@ public class Square extends HBox implements Updateable
         }
         arrCounter = 0;
 
+        if (this.hasPit)
+        {
+            if (!attributes.contains(Character.valueOf('P')))
+            {
+                attributes.add(new Character('P'));
+            }
+        }
 
         if (this.hasWumpus)
         {
@@ -369,28 +376,11 @@ public class Square extends HBox implements Updateable
         arrCounter = 0;
 
 
-
-        if (this.hasStench)
+        if (this.hasPlayer)
         {
-            if (!attributes.contains(Character.valueOf('S')))
+            if (!attributes.contains(Character.valueOf('A')))
             {
-                attributes.add(new Character('S'));
-            }
-        }
-
-        if (this.hasPit)
-        {
-            if (!attributes.contains(Character.valueOf('P')))
-            {
-                attributes.add(new Character('P'));
-            }
-        }
-
-        if (this.hasBreeze)
-        {
-            if (!attributes.contains(Character.valueOf('B')))
-            {
-                attributes.add(new Character('B'));
+                attributes.add(new Character('A'));
             }
         }
 
@@ -401,6 +391,27 @@ public class Square extends HBox implements Updateable
                 attributes.add(new Character('G'));
             }
         }
+
+        if (this.hasStench)
+        {
+
+            if (!attributes.contains(Character.valueOf('S')))
+            {
+                attributes.add(new Character('S'));
+            }
+        }
+
+
+
+        if (this.hasBreeze)
+        {
+            if (!attributes.contains(Character.valueOf('B')))
+            {
+                attributes.add(new Character('B'));
+            }
+        }
+
+
 //        else if(!this.hasGold)
 //        {
 //            if (attributes.contains(Character.valueOf('G')))
@@ -426,19 +437,6 @@ public class Square extends HBox implements Updateable
             flagForRemoval[j] = -1;
         }
         arrCounter = 0;
-
-
-
-
-        if (this.hasPlayer)
-        {
-            if (!attributes.contains(Character.valueOf('A')))
-            {
-                attributes.add(new Character('A'));
-            }
-        }
-
-
 
         if (this.wasVisited)
         {
