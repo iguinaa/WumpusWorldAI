@@ -31,7 +31,7 @@ public class Square extends HBox implements Updateable
             "gold.png", // G 4
             "linkbow.png",  // A 5
             "tile.png",  // !(V) 6   could use bush.png
-            "mystery2.png" //for empty squares on main map  //TODO Andrew: how do I use this?
+            "mystery2.png" //for empty squares on main map
     };
     public int prefSide;
     public int x;
@@ -47,8 +47,10 @@ public class Square extends HBox implements Updateable
         isStart = true;
 
         //Set visisted if this is the start square since it will always be true
+        wasVisited = true;
         setMapChar('V');
         updateLayout();
+
     }
 
     public boolean attrsNeedUpdate;
@@ -444,8 +446,6 @@ public class Square extends HBox implements Updateable
             flagForRemoval[j] = -1;
         }
         arrCounter = 0;
-
-
 
         attrsNeedUpdate = false;
 
