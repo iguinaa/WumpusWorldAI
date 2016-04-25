@@ -140,7 +140,7 @@ public class Game implements Runnable, Updateable
     public static void updateDebugString(String text)
     {
         Game.debugData.setValue(
-                "Debug Information:   \n" + text
+                /*"Debug Information:   \n" +*/ text
         );
     }
     public static void appendDebugString(String text)
@@ -217,7 +217,8 @@ public class Game implements Runnable, Updateable
 
         primaryStage.setScene(scene);
         primaryStage.show();
-
+        player.initialUpdate();
+        updateHumanPlayer();
         return 0;
     }
 
@@ -244,14 +245,12 @@ public class Game implements Runnable, Updateable
 //        boolean valid = false;
         gamePane.setOnKeyReleased( e ->
         {
-            addToLog("found a key\n");
             KeyCode code = e.getCode();
             if(code == KeyCode.W || code == KeyCode.UP)
             {
                 // go up
                 player.handleHumanCommand('u');
 //                valid = true;
-                addToLog("This ones up\n");
             }
             else if(code == KeyCode.S || code == KeyCode.DOWN)
             {
@@ -283,6 +282,12 @@ public class Game implements Runnable, Updateable
                 player.handleHumanCommand('e');
 //                valid = true;
             }
+            else if(code == KeyCode.F)
+            {
+                // Leave iff at 0,0
+                player.handleHumanCommand('g');
+//                valid = true;
+            }
             if (player.needsUpdate)
             {
                 addToLog("Want to update player\n");
@@ -299,6 +304,10 @@ public class Game implements Runnable, Updateable
         {
             System.out.println("query square");
             player.currentSquare = ((WumpusWorldPane) gamePane).getWorldMap().wumpusMap[player.currentX][player.currentY];
+            if(player.currentSquare.getAttributes().contains('W') | player.currentSquare.getAttributes().contains('P'))
+            {
+                player.isDead = true;
+            }
             player.querySquare = false;
         }
         player.update();

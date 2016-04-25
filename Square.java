@@ -825,6 +825,8 @@ public class Square extends HBox implements Updateable
                 out = out + c.toString() + ", ";
             }
             out = out + "\n";
+            out = out + "D Score = " + getTotalDangerScore() + "\n" +
+                    "W Score = " + getWumpusDangerScore() + ";  P Score = " + getPitDangerScore() + "\n";
             Game.addToLog(out);
         }
     }
