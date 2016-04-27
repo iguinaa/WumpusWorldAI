@@ -131,7 +131,7 @@ public class WumpusWorldPane extends GamePane implements Updateable
                 if(i == p.currentX && j == p.currentY)
                 {
                     getWorldMap().wumpusMap[i][j].setMapChar('A');
-                    Game.addToLog("Player Loc = " + i + ", " + j + "\n");
+//                    Game.addToLog("Player Loc = " + i + ", " + j + "\n");
 //                    getWorldMap().wumpusMap[i][j].update();
                 }
                 else

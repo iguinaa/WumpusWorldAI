@@ -8,6 +8,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -176,7 +178,7 @@ public class Game implements Runnable, Updateable
 //            "\n\tPercent Saved: " +
 //            "\n\tNumber of Turns Required: "
 //    );
-
+    CheckBox SafetyOn;
     public Game(Stage primaryStage)
     {
         this.primaryStage = primaryStage;
@@ -238,6 +240,15 @@ public class Game implements Runnable, Updateable
         gamePane.setAlignment(gamePane.getMainPane(), Pos.CENTER);
         ((WumpusWorldPane)gamePane).setLayout(WIDTH, HEIGHT);
         ((WumpusWorldPane)gamePane).options.getChildren().add(btnUpdate);
+        Text lblSafety = new Text("Check For Mostly Safe Mode: (can be a lil buggy)");
+        SafetyOn = new CheckBox();
+        SafetyOn.setSelected(true);
+        SafetyOn.setOnMouseClicked(event -> {
+            if (SafetyOn.isSelected())
+                player.SAFETY_ON = true;
+            else
+                player.SAFETY_ON = false;
+        });
         btnUpdate.setOnMouseClicked(new EventHandler<MouseEvent>()
         {
             @Override
@@ -246,6 +257,8 @@ public class Game implements Runnable, Updateable
                 update();
             }
         });
+        ((WumpusWorldPane)gamePane).options.getChildren().add(lblSafety);
+        ((WumpusWorldPane)gamePane).options.getChildren().add(SafetyOn);
 
     }
     
@@ -408,7 +421,7 @@ public class Game implements Runnable, Updateable
             }
             if (player.needsUpdate)
             {
-                addToLog("Want to update player\n");
+//                addToLog("Want to update player\n");
                 updateHumanPlayer();
             }
         });
@@ -478,7 +491,6 @@ public class Game implements Runnable, Updateable
         player.generateEvent();
         System.out.println("Updating");
         updateAgentPlayer();
-
     }
 
     public void dbgUpdateText(String s)

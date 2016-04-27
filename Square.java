@@ -77,6 +77,7 @@ public class Square extends HBox implements Updateable
     private int wumpusDangerScore = 0, pitDangerScore = 0, totalDangerScore = 0;
     int numTimesBeenMystery;    // #desperate
 
+
     public Square(boolean isPlayerMap, int x, int y)
     {
         super(10); // NOTE: 10 pixels border?
@@ -726,7 +727,7 @@ public class Square extends HBox implements Updateable
                 out = out + c.toString() + ", ";
             }
             out = out + "\n";
-            Game.addToLog(out);
+//            Game.addToLog(out);
             System.out.println("Initial State of Player map squares" + out);
         }
         updatePerceptions();
